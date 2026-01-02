@@ -1,0 +1,105 @@
+Enter<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>متجري</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <div class="logo">🛒</div>
+        <div>
+          <div class="brand__name">متجري</div>
+          <div class="brand__tag">متجر بسيط بـ HTML</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <input id="search" class="input" placeholder="ابحث عن منتج..." />
+        <button id="openCart" class="btn btn--primary">
+          السلة <span id="cartCount" class="badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>واجهة متجر جاهزة</h1>
+        <p>أضف منتجاتك، والسلة تشتغل محليًا. تقدر ترسل الطلب عبر واتساب/تلغرام.</p>
+        <div class="hero__row">
+          <button class="btn" id="scrollToProducts">عرض المنتجات</button>
+          <a class="btn btn--ghost" href="#how">طريقة الطلب</a>
+        </div>
+      </div>
+      <div class="card hero__card">
+        <div class="muted">ملاحظة</div>
+        <div class="hero__note">
+          إذا تحتاج دفع تلقائي وتسليم تلقائي، نضيف Backend لاحقًا (PHP/Node) مع بوابة دفع رسمية.
+        </div>
+      </div>
+    </section>
+
+    <section id="products">
+      <div class="sectionTitle">
+        <h2>المنتجات</h2>
+        <div class="muted" id="resultCount"></div>
+      </div>
+      <div class="grid" id="productGrid"></div>
+    </section>
+
+    <section id="how" class="how">
+      <h2>طريقة الطلب</h2>
+      <ol>
+        <li>اختر المنتجات وأضفها للسلة.</li>
+        <li>افتح السلة واضغط "إرسال الطلب".</li>
+        <li>راح يطلع لك نص جاهز ينرسل واتساب/تلغرام.</li>
+      </ol>
+      <div class="how__buttons">
+        <button class="btn btn--primary" id="sendWhatsApp">إرسال عبر واتساب</button>
+        <button class="btn" id="sendTelegram">إرسال عبر تلغرام</button>
+      </div>
+      <p class="muted small">غيّر رقم الواتساب/يوزر التلغرام داخل <code>app.js</code>.</p>
+    </section>
+  </main>
+
+  <!-- CART DRAWER -->
+  <aside class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="drawer__panel">
+      <div class="drawer__header">
+        <h3>سلة المشتريات</h3>
+        <button class="iconBtn" id="closeCart" aria-label="إغلاق">✕</button>
+      </div>
+
+      <div id="cartItems" class="drawer__body"></div>
+
+      <div class="drawer__footer">
+        <div class="row">
+          <div class="muted">المجموع</div>
+          <div class="total" id="cartTotal">0</div>
+        </div>
+
+        <label class="label">ملاحظات (اختياري)</label>
+        <textarea id="notes" class="textarea" rows="3" placeholder="مثال: وقت التسليم، تفاصيل إضافية..."></textarea>
+
+        <div class="footerBtns">
+          <button class="btn btn--ghost" id="clearCart">تفريغ السلة</button>
+          <button class="btn btn--primary" id="copyOrder">نسخ نص الطلب</button>
+        </div>
+
+        <div class="footerBtns">
+          <button class="btn btn--primary" id="sendWhatsApp2">إرسال واتساب</button>
+          <button class="btn" id="sendTelegram2">إرسال تلغرام</button>
+        </div>
+      </div>
+    </div>
+    <div class="drawer__backdrop" id="backdrop"></div>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>
