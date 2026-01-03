@@ -4,13 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NAS</title>
-  <meta name="description" content="NAS - Digital subscriptions store" />
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
 
     :root{
-      /* DARK */
       --bg:#070A12;
       --text:#F2F6FF;
       --muted:#AAB4D8;
@@ -22,11 +20,9 @@
       --radius:24px;
       --shadow: 0 24px 80px rgba(0,0,0,.55);
 
-      /* بدون لون سمائي/بنفسجي على الكروت */
-      --p1:#7C4DFF;   /* purple for title only */
-      --p2:#FF4D8D;   /* pink for title only */
-      --p3:#FFDB4D;   /* gold for accents */
-      --p4:#A855F7;   /* violet for title only */
+      --p1:#7C4DFF;   /* used mainly for NAS title */
+      --p2:#FF4D8D;
+      --p3:#FFDB4D;
 
       --btn: rgba(255,255,255,.085);
       --wa:#25D366;
@@ -49,11 +45,13 @@
       color-scheme: light;
     }
 
-    /* ✅ منع التحديد المزعج باللمس */
+    /* ✅ منع تحديد النص + منع لون اللمس الافتراضي البنفسجي */
     html, body, *{
       -webkit-user-select: none !important;
       user-select: none !important;
       -webkit-touch-callout: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+      tap-highlight-color: transparent !important;
     }
     ::selection{ background: transparent; }
 
@@ -64,12 +62,13 @@
       font-family:"Cairo", system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
       color:var(--text);
       background:
-        radial-gradient(1200px 700px at 30% -10%, rgba(124,77,255,.18), transparent 58%),
-        radial-gradient(1000px 650px at 90% 5%, rgba(255,77,141,.14), transparent 62%),
-        radial-gradient(900px 600px at 20% 110%, rgba(255,219,77,.10), transparent 60%),
+        radial-gradient(1200px 700px at 30% -10%, rgba(124,77,255,.14), transparent 58%),
+        radial-gradient(1000px 650px at 90% 5%, rgba(255,77,141,.10), transparent 62%),
+        radial-gradient(900px 600px at 20% 110%, rgba(255,219,77,.08), transparent 60%),
         var(--bg);
       overflow-x:hidden;
     }
+
     a{color:inherit}
     .container{max-width:1160px;margin:0 auto;padding:22px}
 
@@ -85,7 +84,7 @@
     /* topbar */
     .topbar{
       position:sticky; top:0; z-index:70;
-      background: rgba(0,0,0,.18);
+      background: rgba(0,0,0,.16);
       backdrop-filter: blur(12px);
       border-bottom:1px solid var(--border);
     }
@@ -171,10 +170,10 @@
     .toggle .dot{
       width:12px;height:12px;border-radius:999px;
       background: linear-gradient(135deg, var(--p1), var(--p2));
-      box-shadow: 0 0 0 4px rgba(124,77,255,.18);
+      box-shadow: 0 0 0 4px rgba(124,77,255,.14);
     }
 
-    /* ripple */
+    /* ripple (buttons only) */
     .rippleSpan{
       position:absolute;
       border-radius:999px;
@@ -208,9 +207,9 @@
       position:absolute;
       inset:-160px;
       background:
-        radial-gradient(circle at 30% 30%, rgba(124,77,255,.28), transparent 55%),
-        radial-gradient(circle at 75% 20%, rgba(255,77,141,.22), transparent 55%),
-        radial-gradient(circle at 55% 70%, rgba(255,219,77,.16), transparent 60%);
+        radial-gradient(circle at 30% 30%, rgba(124,77,255,.20), transparent 55%),
+        radial-gradient(circle at 75% 20%, rgba(255,77,141,.16), transparent 55%),
+        radial-gradient(circle at 55% 70%, rgba(255,219,77,.12), transparent 60%);
       filter: blur(22px);
       opacity:.95;
       pointer-events:none;
@@ -241,8 +240,7 @@
       background: conic-gradient(from 120deg,
         rgba(124,77,255,.45),
         rgba(255,77,141,.35),
-        rgba(255,219,77,.28),
-        rgba(168,85,247,.40),
+        rgba(255,219,77,.30),
         rgba(124,77,255,.45)
       );
       opacity:.22;
@@ -262,7 +260,7 @@
         0 2px 0 rgba(255,255,255,.08),
         0 10px 0 rgba(0,0,0,.22),
         0 22px 35px rgba(0,0,0,.35);
-      background: linear-gradient(90deg, var(--p1), var(--p2), var(--p3), var(--p4), var(--p1));
+      background: linear-gradient(90deg, var(--p1), var(--p2), var(--p3), var(--p1));
       background-size: 420% 100%;
       -webkit-background-clip:text;
       background-clip:text;
@@ -277,7 +275,7 @@
 
     .subtitle{ color:var(--muted); font-size:15px; line-height:1.9; max-width:62ch; }
     .hrGlow{ height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent); border:0; margin:6px 0 0; opacity:.9; }
-    [data-theme="light"] .hrGlow{ background: linear-gradient(90deg, transparent, rgba(10,18,32,.25), transparent); }
+    [data-theme="light"] .hrGlow{ background: linear-gradient(90deg, transparent, rgba(10,18,32,.18), transparent); }
 
     .side{
       border:1px solid var(--border);
@@ -307,7 +305,7 @@
       margin-top:10px;
     }
 
-    /* ✅ كروت بدون بنفسجي */
+    /* cards: gray/clean no purple */
     .card{
       border:1px solid var(--border);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
@@ -348,7 +346,6 @@
 
     .app{ display:flex; align-items:center; gap:10px; min-width:0; }
 
-    /* icons always visible */
     .appIcon{
       width:46px;height:46px;
       border-radius:16px;
@@ -367,7 +364,7 @@
 
     .names{ display:flex; flex-direction:column; gap:2px; min-width:0; }
 
-    /* ✅ حل (...) — نخلي العنوان يلتف سطرين */
+    /* ✅ show (شهري/سنوي) fully, no (...) */
     .names .en{
       font-weight:900;
       font-size:17px;
@@ -428,7 +425,6 @@
       padding:11px 14px;
       border-radius:16px;
       cursor:pointer;
-      user-select:none;
       transition: transform .14s ease, filter .14s ease, color .14s ease;
       position:relative;
       overflow:hidden;
@@ -532,7 +528,37 @@
     .badge .dot{
       width:10px;height:10px;border-radius:999px;
       background: linear-gradient(135deg, var(--p2), var(--p1));
-      box-shadow: 0 0 0 4px rgba(255,77,141,.16);
+      box-shadow: 0 0 0 4px rgba(255,77,141,.14);
+    }
+
+    /* ✅ NAS sparkle (tap) */
+    .tapNASSparkle{
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      font-weight: 900;
+      letter-spacing: .5px;
+      transform: translate(-50%, -50%) scale(.92);
+      opacity: 0;
+      color: rgba(255,255,255,.92);
+      text-shadow: 0 10px 24px rgba(0,0,0,.35);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(8px);
+      animation: nasPop .55s ease-out forwards;
+    }
+    [data-theme="light"] .tapNASSparkle{
+      color: rgba(10,18,32,.92);
+      background: rgba(255,255,255,.65);
+      border: 1px solid rgba(10,18,32,.12);
+      text-shadow: 0 10px 24px rgba(0,0,0,.12);
+    }
+    @keyframes nasPop{
+      0%{ opacity: 0; transform: translate(-50%, -50%) scale(.92); }
+      20%{ opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100%{ opacity: 0; transform: translate(-50%, -65%) scale(1.06); }
     }
 
     @media (max-width: 980px){
@@ -566,14 +592,14 @@
             <span id="themeText">ليلي</span>
           </button>
 
-          <a class="iconBtn" id="waTop" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <a class="iconBtn ripple" id="waTop" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M20.6 3.4A11 11 0 0 0 2.9 16.2L2 22l5.9-.8A11 11 0 0 0 20.6 3.4Z" stroke="currentColor" stroke-width="1.4"/>
               <path d="M8.6 7.9c-.3-.7-.6-.7-.9-.7h-.7c-.2 0-.6.1-.9.5-.3.4-1.2 1.2-1.2 3 0 1.7 1.3 3.4 1.4 3.6.2.2 2.5 4 6.2 5.4 3 .9 3.7.7 4.3.6.7-.1 2-1 2.3-1.9.3-.9.3-1.6.2-1.8-.1-.2-.3-.3-.7-.5l-2.3-1.1c-.2-.1-.5-.2-.8.2-.3.4-1 1.1-1.2 1.3-.2.2-.4.3-.8.1-.4-.2-1.8-.7-3.4-2.1-1.3-1.1-2.1-2.5-2.4-2.9-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.2-.7-.1-.2-.7-2-.9-2.4Z" fill="currentColor"/>
             </svg>
           </a>
 
-          <a class="iconBtn" id="igTop" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener" aria-label="Instagram">
+          <a class="iconBtn ripple" id="igTop" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9A4.7 4.7 0 0 1 2.8 16.5v-9A4.7 4.7 0 0 1 7.5 2.8Z" stroke="currentColor" stroke-width="1.4"/>
               <path d="M12 8.2A3.8 3.8 0 1 0 12 15.8 3.8 3.8 0 0 0 12 8.2Z" stroke="currentColor" stroke-width="1.4"/>
@@ -616,14 +642,15 @@
 
       <div class="sectionTitle">
         <h2 id="productsTitle">التطبيقات المتوفرة</h2>
-        <div class="muted" id="productsHint">اضغط زر الشرح لكل تطبيق</div>
+        <!-- ✅ حذفنا سطر الشرح بالكامل -->
+        <div class="muted" id="productsHint"></div>
       </div>
 
       <section class="grid" id="grid"></section>
 
       <footer class="footer">
         <div id="footerText">يمكنك الطلب عبر انستغرام:</div>
-        <a class="badge" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener">
+        <a class="badge ripple" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener">
           <span class="dot"></span>
           <span id="igHandle">l11nl</span>
         </a>
@@ -637,7 +664,7 @@
       <div class="modalCard">
         <div class="modalHead">
           <div class="modalTitle" id="modalTitle">—</div>
-          <button class="iconBtn" id="modalClose" aria-label="Close">
+          <button class="iconBtn ripple" id="modalClose" aria-label="Close">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -645,16 +672,16 @@
         </div>
         <div class="modalBody" id="modalBody"></div>
         <div class="modalActions">
-          <button class="btn btnSmall" id="modalMore">عرض المزيد</button>
-          <button class="btn btnSmall" id="modalLess" style="display:none">إخفاء</button>
-          <a class="btn btnWA" id="modalOrder" href="#" target="_blank" rel="noopener">اطلب الآن</a>
+          <button class="btn btnSmall ripple" id="modalMore">عرض المزيد</button>
+          <button class="btn btnSmall ripple" id="modalLess" style="display:none">إخفاء</button>
+          <a class="btn btnWA ripple" id="modalOrder" href="#" target="_blank" rel="noopener">اطلب الآن</a>
         </div>
       </div>
     </div>
 
     <!-- Music -->
     <audio id="bgm" src="winter.mp3" loop preload="none"></audio>
-    <button class="musicBtn" id="musicBtn" aria-label="Music">
+    <button class="musicBtn ripple" id="musicBtn" aria-label="Music">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M10 5v12.2A2.8 2.8 0 1 1 8.6 15V7l10-2v9.2A2.8 2.8 0 1 1 16.6 12V5l-6 1Z"
               stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -666,7 +693,10 @@
     // ========= Settings =========
     const WHATSAPP_NUMBER = "9647868844984";
     const INSTAGRAM_URL = "https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3";
-    const CONTACT_MSG = "السلام عليكم اجيتك من موقع NAS\nاريد اشترك يمكم";
+
+    // ✅ رسائل واتساب حسب اللغة
+    const TOP_MSG_AR = "السلام عليكم اجيتك من موقع NAS\nاريد اشترك يمكم";
+    const TOP_MSG_EN = "Hello, I came from NAS website.\nI want to subscribe.";
 
     // سعر صرف تقريبي
     const IQD_PER_USD = 1500;
@@ -675,10 +705,10 @@
       return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
     }
 
-    document.getElementById("waTop").href = waLink(CONTACT_MSG);
+    const waTop = document.getElementById("waTop");
     document.getElementById("igTop").href = INSTAGRAM_URL;
 
-    // ========= Icons (internet) + fallback =========
+    // ========= Icons =========
     function iconUrl(key){
       const theme = document.documentElement.getAttribute("data-theme") || "dark";
       const isLight = theme === "light";
@@ -753,7 +783,7 @@
         sideTitle:"طريقة الطلب",
         side:`1) اختر التطبيق<br>2) اضغط <b>اطلب الآن</b><br>3) تنفتح رسالة جاهزة على واتساب<br><br>يمكنك أيضاً الطلب عبر انستغرام.`,
         title:"التطبيقات المتوفرة",
-        hint:"اضغط زر الشرح لكل تطبيق",
+        hint:"", // ✅ حذفناها
         footer:"يمكنك الطلب عبر انستغرام:",
         order:"اطلب الآن",
         more:"عرض المزيد",
@@ -762,6 +792,7 @@
         themeLight:"نهاري",
         meaning:(name)=>`ماذا يعني ${name}؟`,
         planLabel:(plan)=> plan==="Monthly" ? "شهري" : "سنوي",
+        topWa: TOP_MSG_AR
       },
       en:{
         quick:"Quick Order ✨",
@@ -769,7 +800,7 @@
         sideTitle:"How to order",
         side:`1) Choose the app<br>2) Tap <b>Order Now</b><br>3) A ready WhatsApp message opens<br><br>You can also order via Instagram.`,
         title:"Available Apps",
-        hint:"Tap the info button for each app",
+        hint:"", // ✅ حذفناها
         footer:"You can order via Instagram:",
         order:"Order Now",
         more:"Show more",
@@ -778,6 +809,7 @@
         themeLight:"Day",
         meaning:(name)=>`What does ${name} mean?`,
         planLabel:(plan)=> plan==="Monthly" ? "Monthly" : "Yearly",
+        topWa: TOP_MSG_EN
       }
     };
 
@@ -850,7 +882,6 @@
       const how = isAr ? p.how_ar : p.how_en;
       const infoBtnText = UI[currentLang].meaning(p.en);
       const orderText = UI[currentLang].order;
-
       const msg = waMessage(p.en, p.plan);
 
       return `
@@ -952,7 +983,7 @@
       if(p) openModal(p);
     });
 
-    // ========= Ripple + Haptic =========
+    // ========= Ripple + Haptic (buttons only) =========
     function addRipple(el, x, y){
       const rect = el.getBoundingClientRect();
       const span = document.createElement("span");
@@ -972,6 +1003,24 @@
       addRipple(t, e.clientX, e.clientY);
       vibrate();
     });
+
+    // ========= NAS sparkle on tap (NOT on buttons/links/selects) =========
+    function isInteractive(el){
+      return !!el.closest("button,a,select,input,textarea,.iconBtn,.btn,.toggle,.select,.modalCard");
+    }
+    function showNASSparkle(x,y){
+      const s = document.createElement("div");
+      s.className = "tapNASSparkle";
+      s.style.left = x + "px";
+      s.style.top  = y + "px";
+      s.textContent = "NAS ✨";
+      document.body.appendChild(s);
+      setTimeout(()=> s.remove(), 650);
+    }
+    document.addEventListener("pointerdown", (e) => {
+      if(isInteractive(e.target)) return;
+      showNASSparkle(e.clientX, e.clientY);
+    }, {passive:true});
 
     // ========= Snow =========
     const canvas = document.getElementById("winter");
@@ -1022,7 +1071,7 @@
       }
     });
 
-    // ========= Language apply =========
+    // ========= Apply language =========
     function applyLang(lang){
       currentLang = lang;
       localStorage.setItem("nas_lang", lang);
@@ -1039,21 +1088,21 @@
       productsHint.textContent = UI[lang].hint;
       footerText.textContent = UI[lang].footer;
 
-      modalMore.textContent = UI[lang].more;
-      modalLess.textContent = UI[lang].less;
-      modalOrder.textContent = UI[lang].order;
+      // ✅ تحديث رسالة واتساب العلوية حسب اللغة
+      waTop.href = waLink(UI[lang].topWa);
 
       updateThemeText();
       renderProducts();
     }
 
     // init
-    langSelect.value = currentLang;
+    const savedLang = localStorage.getItem("nas_lang") || "ar";
+    langSelect.value = savedLang;
     langSelect.addEventListener("change", () => applyLang(langSelect.value));
 
     resize(); tick();
     updateThemeText();
-    applyLang(currentLang);
+    applyLang(savedLang);
   </script>
 </body>
 </html>
