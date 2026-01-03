@@ -4,25 +4,24 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NAS</title>
-  <meta name="description" content="NAS - خدمات واشتراكات رقمية | طلب عبر واتساب وانستغرام" />
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
 
     :root{
-      /* Dark (default) — removed cyan */
+      /* DARK */
       --bg:#070A12;
       --text:#F2F6FF;
       --muted:#AAB4D8;
 
-      --glass: rgba(255,255,255,.075);
+      --glass: rgba(255,255,255,.07);
       --glass2: rgba(255,255,255,.04);
       --border: rgba(255,255,255,.14);
 
       --radius:24px;
       --shadow: 0 24px 80px rgba(0,0,0,.55);
 
-      /* Palette without sky/cyan */
+      /* بدون لون سمائي */
       --p1:#7C4DFF;   /* purple */
       --p2:#FF4D8D;   /* pink */
       --p3:#FFDB4D;   /* gold */
@@ -31,29 +30,20 @@
       --btn: rgba(255,255,255,.085);
       --wa:#25D366;
 
-      --glow1: rgba(124,77,255,.25);
-      --glow2: rgba(255,77,141,.18);
-      --glow3: rgba(255,219,77,.10);
-
       color-scheme: dark;
     }
 
     [data-theme="light"]{
       --bg:#F6F7FB;
       --text:#0B1220;
-      --muted:#3F4B68;
+      --muted:#44506A;
 
       --glass: rgba(10,18,32,.06);
       --glass2: rgba(10,18,32,.04);
       --border: rgba(10,18,32,.12);
 
       --shadow: 0 22px 70px rgba(0,0,0,.12);
-
       --btn: rgba(10,18,32,.06);
-
-      --glow1: rgba(124,77,255,.16);
-      --glow2: rgba(255,77,141,.12);
-      --glow3: rgba(255,219,77,.10);
 
       color-scheme: light;
     }
@@ -65,31 +55,33 @@
       font-family:"Cairo", system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
       color:var(--text);
       background:
-        radial-gradient(1200px 700px at 30% -10%, var(--glow1), transparent 58%),
-        radial-gradient(1000px 650px at 90% 5%, var(--glow2), transparent 62%),
-        radial-gradient(900px 600px at 20% 110%, var(--glow3), transparent 60%),
+        radial-gradient(1200px 700px at 30% -10%, rgba(124,77,255,.22), transparent 58%),
+        radial-gradient(1000px 650px at 90% 5%, rgba(255,77,141,.16), transparent 62%),
+        radial-gradient(900px 600px at 20% 110%, rgba(255,219,77,.10), transparent 60%),
         var(--bg);
       overflow-x:hidden;
     }
     a{color:inherit}
     .container{max-width:1160px;margin:0 auto;padding:22px}
 
-    /* Winter background */
+    /* snow */
     #winter{
       position:fixed; inset:0;
       z-index:0;
       pointer-events:none;
-      opacity:.55;
+      opacity:.60;
     }
     .layer{position:relative; z-index:2;}
 
-    /* Topbar */
+    /* topbar */
     .topbar{
       position:sticky; top:0; z-index:70;
-      background: color-mix(in srgb, var(--bg) 55%, transparent);
+      background: rgba(0,0,0,.18);
       backdrop-filter: blur(12px);
       border-bottom:1px solid var(--border);
     }
+    [data-theme="light"] .topbar{ background: rgba(255,255,255,.55); }
+
     .topbar__inner{
       display:flex;
       align-items:center;
@@ -107,48 +99,37 @@
       border:1px solid var(--border);
       background: var(--glass);
       box-shadow: 0 12px 45px rgba(0,0,0,.18);
-      color: var(--muted);
+      color: var(--text);
       font-size: 13px;
-      white-space:nowrap;
+      font-weight: 900;
+      letter-spacing:.2px;
       position:relative;
       overflow:hidden;
+      cursor:default;
     }
-    .chip.shiny{
-      color: var(--text);
-      font-weight: 900;
-      letter-spacing: .2px;
-    }
-    .chip.shiny::before{
+    .chip::before{
       content:"";
       position:absolute;
       inset:-2px;
-      background: linear-gradient(90deg,
-        transparent,
-        rgba(255,255,255,.22),
-        transparent
-      );
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
       transform: translateX(-120%);
       animation: shine 2.2s ease-in-out infinite;
       pointer-events:none;
     }
     @keyframes shine{
-      0%{ transform: translateX(-120%); opacity: .0; }
-      20%{ opacity: .75; }
-      70%{ opacity: .22; }
+      0%{ transform: translateX(-120%); opacity: 0; }
+      20%{ opacity: .8; }
+      70%{ opacity: .25; }
       100%{ transform: translateX(120%); opacity: 0; }
     }
 
     .topActions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
     }
 
     .iconBtn{
       width:44px;height:44px;
-      display:inline-grid;
-      place-items:center;
+      display:inline-grid; place-items:center;
       border-radius:16px;
       border:1px solid var(--border);
       background: var(--btn);
@@ -162,8 +143,7 @@
     .iconBtn:active{transform: translateY(0px)}
     .iconBtn svg{width:22px;height:22px}
 
-    /* Language + Theme */
-    .select{
+    .select, .toggle{
       border:1px solid var(--border);
       background: var(--btn);
       color: var(--text);
@@ -176,40 +156,28 @@
       overflow:hidden;
     }
     .toggle{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border-radius:16px;
-      border:1px solid var(--border);
-      background: var(--btn);
-      cursor:pointer;
+      display:inline-flex; align-items:center; gap:10px;
       user-select:none;
-      font-weight:900;
-      position:relative;
-      overflow:hidden;
     }
     .toggle .dot{
       width:12px;height:12px;border-radius:999px;
       background: linear-gradient(135deg, var(--p1), var(--p2));
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--p1) 18%, transparent);
+      box-shadow: 0 0 0 4px rgba(124,77,255,.18);
     }
 
-    /* Ripple */
+    /* ripple */
     .rippleSpan{
       position:absolute;
       border-radius:999px;
       transform: scale(0);
       animation: ripple .55s ease-out;
-      background: color-mix(in srgb, var(--text) 25%, transparent);
+      background: rgba(255,255,255,.25);
       pointer-events:none;
       mix-blend-mode: screen;
     }
-    @keyframes ripple{
-      to{ transform: scale(4); opacity: 0; }
-    }
+    @keyframes ripple{ to{ transform: scale(4); opacity: 0; } }
 
-    /* Hero */
+    /* hero */
     .hero{padding:22px 0 10px}
     .heroGrid{
       display:grid;
@@ -217,6 +185,7 @@
       gap:16px;
       align-items:stretch;
     }
+
     .heroCard{
       border:1px solid var(--border);
       background: linear-gradient(180deg, var(--glass), var(--glass2));
@@ -230,13 +199,14 @@
       position:absolute;
       inset:-160px;
       background:
-        radial-gradient(circle at 30% 30%, rgba(124,77,255,.35), transparent 55%),
-        radial-gradient(circle at 75% 20%, rgba(255,77,141,.24), transparent 55%),
-        radial-gradient(circle at 55% 70%, rgba(255,219,77,.16), transparent 60%);
+        radial-gradient(circle at 30% 30%, rgba(124,77,255,.38), transparent 55%),
+        radial-gradient(circle at 75% 20%, rgba(255,77,141,.25), transparent 55%),
+        radial-gradient(circle at 55% 70%, rgba(255,219,77,.18), transparent 60%);
       filter: blur(22px);
       opacity:.95;
       pointer-events:none;
     }
+
     .heroInner{
       position:relative;
       padding: 20px;
@@ -250,11 +220,9 @@
       width:fit-content;
       padding: 14px 18px;
       border-radius: 22px;
-      border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-      background: color-mix(in srgb, var(--glass) 90%, transparent);
-      box-shadow:
-        0 18px 60px rgba(0,0,0,.35),
-        0 0 0 1px color-mix(in srgb, var(--p1) 16%, transparent) inset;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
       overflow:hidden;
     }
     .nasPlate::before{
@@ -298,19 +266,9 @@
       100%{ background-position:0% 50% }
     }
 
-    .subtitle{
-      color:var(--muted);
-      font-size: 15px;
-      line-height: 1.9;
-      max-width: 62ch;
-    }
-    .hrGlow{
-      height:1px;
-      background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text) 28%, transparent), transparent);
-      border:0;
-      margin: 6px 0 0;
-      opacity:.9;
-    }
+    .subtitle{ color:var(--muted); font-size:15px; line-height:1.9; max-width:62ch; }
+    .hrGlow{ height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent); border:0; margin:6px 0 0; opacity:.9; }
+    [data-theme="light"] .hrGlow{ background: linear-gradient(90deg, transparent, rgba(10,18,32,.25), transparent); }
 
     .side{
       border:1px solid var(--border);
@@ -318,13 +276,11 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding:18px;
-      position:relative;
-      overflow:hidden;
     }
     .side h3{margin:0 0 8px; font-size:18px}
     .side p{margin:0; color:var(--muted); line-height:1.95}
 
-    /* Products */
+    /* products */
     .sectionTitle{
       display:flex;
       align-items:baseline;
@@ -339,9 +295,8 @@
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:14px;
-      margin-top: 10px;
+      margin-top:10px;
     }
-
     .card{
       border:1px solid var(--border);
       background: linear-gradient(180deg, var(--glass), var(--glass2));
@@ -363,7 +318,7 @@
 
     .cardBody{
       position:relative;
-      padding: 16px;
+      padding:16px;
       display:flex;
       flex-direction:column;
       gap:12px;
@@ -377,109 +332,65 @@
       gap:10px;
     }
 
-    .app{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-    }
+    .app{ display:flex; align-items:center; gap:10px; min-width:0; }
 
-    /* Icon is guaranteed visible */
+    /* icon – guaranteed visible + fallback */
     .appIcon{
       width:46px;height:46px;
-      border-radius: 16px;
+      border-radius:16px;
       border:1px solid var(--border);
-      background:
-        linear-gradient(135deg,
-          color-mix(in srgb, var(--p1) 35%, transparent),
-          color-mix(in srgb, var(--p2) 25%, transparent)
-        );
-      display:grid;
-      place-items:center;
+      background: linear-gradient(135deg, rgba(124,77,255,.35), rgba(255,77,141,.25));
+      display:grid; place-items:center;
       overflow:hidden;
       flex:0 0 auto;
       box-shadow: 0 14px 40px rgba(0,0,0,.18);
     }
-    .appIcon img{
-      width:28px;height:28px;
-      display:block;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.22));
-    }
-    .appIcon .fallback{
-      display:none;
-      font-weight: 900;
-      font-size: 14px;
-      color: var(--text);
-      letter-spacing:.5px;
-    }
+    .appIcon img{ width:28px;height:28px; display:block; filter: drop-shadow(0 10px 18px rgba(0,0,0,.22)); }
+    .appIcon .fallback{ display:none; font-weight:900; font-size:14px; color:var(--text); letter-spacing:.6px; }
 
-    .names{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      min-width:0;
-    }
+    .names{ display:flex; flex-direction:column; gap:2px; min-width:0; }
     .names .en{
-      font-weight: 900;
-      font-size: 17px;
-      line-height:1.2;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      font-weight:900;
+      font-size:17px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
       direction:ltr;
       text-align:right;
     }
-    .names .ar{
-      color:var(--muted);
-      font-size: 12.5px;
-      font-weight: 800;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
+    .names .ar{ color:var(--muted); font-size:12.5px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
     .price{
-      font-weight: 900;
-      font-size: 15px;
-      white-space:nowrap;
-      background: color-mix(in srgb, var(--glass) 85%, transparent);
+      font-weight:900;
+      font-size:15px;
+      background: rgba(255,255,255,.06);
       border:1px solid var(--border);
       padding:8px 10px;
-      border-radius: 16px;
-      line-height: 1.2;
+      border-radius:16px;
+      line-height:1.2;
       text-align:center;
       min-width: 120px;
+      white-space:nowrap;
     }
+    [data-theme="light"] .price{ background: rgba(10,18,32,.05); }
+
     .price .sub{
       display:block;
       margin-top:6px;
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--muted);
+      font-size:12px;
+      font-weight:800;
+      color:var(--muted);
       white-space:nowrap;
     }
 
-    .desc{
-      color:var(--muted);
-      line-height: 1.95;
-      font-size: 13px;
-      flex:1;
-    }
+    .desc{ color:var(--muted); line-height:1.95; font-size:13px; flex:1; }
 
-    .ctaRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top: 2px;
-    }
+    .ctaRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 
     .btn{
       border:1px solid var(--border);
       background: var(--btn);
       color:var(--text);
-      padding: 11px 14px;
-      border-radius: 16px;
+      padding:11px 14px;
+      border-radius:16px;
       cursor:pointer;
       user-select:none;
       transition: transform .14s ease, filter .14s ease, color .14s ease;
@@ -490,138 +401,104 @@
       justify-content:center;
       gap:8px;
       text-decoration:none;
-      font-weight: 900;
-      font-size: 13px;
+      font-weight:900;
+      font-size:13px;
     }
     .btn:hover{filter:brightness(1.06); transform: translateY(-1px)}
-    .btn:active{
-      transform: translateY(0px);
-      color: var(--p3); /* text color changes on press */
-    }
+    /* لون نص مختلف عند الضغط */
+    .btn:active{ transform: translateY(0px); color: var(--p3); }
 
-    .btnSmall{
-      padding: 10px 12px;
-      font-size: 12px;
-      font-weight: 900;
-    }
+    .btnSmall{ padding:10px 12px; font-size:12px; font-weight:900; }
     .btnWA{
       flex:1;
       min-width: 170px;
-      border-color: color-mix(in srgb, var(--wa) 35%, var(--border));
-      background: color-mix(in srgb, var(--wa) 15%, transparent);
+      border-color: rgba(37,211,102,.35);
+      background: rgba(37,211,102,.14);
     }
 
-    /* Modal */
-    .modal{
-      position:fixed; inset:0;
-      display:none; z-index: 90;
-    }
+    /* modal */
+    .modal{ position:fixed; inset:0; display:none; z-index:90; }
     .modal[aria-hidden="false"]{display:block}
-    .modalBack{
-      position:absolute; inset:0;
-      background: rgba(0,0,0,.55);
-      backdrop-filter: blur(8px);
-    }
+    .modalBack{ position:absolute; inset:0; background: rgba(0,0,0,.55); backdrop-filter: blur(8px); }
     .modalCard{
       position:absolute;
-      inset-inline: 14px;
-      top: 10vh;
-      max-width: 760px;
-      margin: 0 auto;
-      border-radius: 26px;
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg,
-        color-mix(in srgb, var(--bg) 75%, rgba(20,24,40,.55)),
-        color-mix(in srgb, var(--bg) 85%, rgba(10,12,20,.55))
-      );
+      inset-inline:14px;
+      top:10vh;
+      max-width:760px;
+      margin:0 auto;
+      border-radius:26px;
+      border:1px solid var(--border);
+      background: rgba(10,12,20,.92);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
+    [data-theme="light"] .modalCard{ background: rgba(246,247,251,.95); }
+
     .modalHead{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:14px 16px;
+      border-bottom:1px solid var(--border);
     }
     .modalTitle{
-      font-weight: 900;
-      font-size: 16px;
-      line-height:1.4;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      direction:ltr;
-      text-align:right;
+      font-weight:900; font-size:16px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      direction:ltr; text-align:right;
     }
-    .modalBody{
-      padding: 16px;
-      color: var(--muted);
-      line-height: 2;
-      font-size: 14px;
-    }
-    .modalBody .lead{
-      color: var(--text);
-      font-weight: 900;
-      font-size: 15px;
-      margin-bottom: 10px;
-    }
+    .modalBody{ padding:16px; color:var(--muted); line-height:2; font-size:14px; }
+    .modalBody .lead{ color:var(--text); font-weight:900; font-size:15px; margin-bottom:10px; }
+    [data-theme="light"] .modalBody .lead{ color: var(--text); }
+
     .modalActions{
-      padding: 14px 16px;
-      border-top: 1px solid var(--border);
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
+      padding:14px 16px;
+      border-top:1px solid var(--border);
+      display:flex; gap:10px; flex-wrap:wrap;
     }
 
-    /* Music button */
+    /* music */
     .musicBtn{
       position:fixed;
-      bottom: 16px;
-      inset-inline-end: 16px;
-      z-index: 100;
+      bottom:16px;
+      inset-inline-end:16px;
+      z-index:100;
       width:56px;height:56px;
-      border-radius: 18px;
+      border-radius:18px;
       border:1px solid var(--border);
       background: var(--btn);
       box-shadow: 0 18px 60px rgba(0,0,0,.35);
-      display:grid;
-      place-items:center;
+      display:grid; place-items:center;
       cursor:pointer;
       overflow:hidden;
     }
     .musicBtn svg{width:26px;height:26px}
 
-    /* Footer */
+    /* footer */
     .footer{
-      margin-top: 26px;
-      border-top: 1px solid var(--border);
-      padding: 18px 0 34px;
-      color: var(--muted);
+      margin-top:26px;
+      border-top:1px solid var(--border);
+      padding:18px 0 34px;
+      color:var(--muted);
       text-align:center;
-      line-height: 2;
-      font-size: 13px;
+      line-height:2;
+      font-size:13px;
     }
     .badge{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding: 8px 12px;
-      border-radius: 999px;
+      padding:8px 12px;
+      border-radius:999px;
       border:1px solid var(--border);
       background: var(--glass);
-      font-weight: 900;
+      font-weight:900;
       text-decoration:none;
       position:relative;
       overflow:hidden;
-      /* standout color */
       color: var(--p2);
     }
     .badge .dot{
       width:10px;height:10px;border-radius:999px;
       background: linear-gradient(135deg, var(--p2), var(--p1));
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--p2) 18%, transparent);
+      box-shadow: 0 0 0 4px rgba(255,77,141,.16);
     }
 
     @media (max-width: 980px){
@@ -642,7 +519,7 @@
   <div class="layer">
     <div class="topbar">
       <div class="container topbar__inner">
-        <div class="chip shiny ripple" id="quickChip">طلب سريع ✨</div>
+        <div class="chip ripple" id="quickChip">طلب سريع ✨</div>
 
         <div class="topActions">
           <select class="select ripple" id="langSelect" aria-label="Language">
@@ -694,7 +571,7 @@
           <div class="side">
             <h3 id="sideTitle">طريقة الطلب</h3>
             <p id="sideText">
-              1) اختر المنتج<br>
+              1) اختر التطبيق<br>
               2) اضغط <b>اطلب الآن</b><br>
               3) تنفتح رسالة جاهزة على واتساب<br><br>
               يمكنك أيضاً الطلب عبر انستغرام.
@@ -722,7 +599,7 @@
 
     <!-- Modal -->
     <div class="modal" id="modal" aria-hidden="true">
-      <div class="modalBack" id="modalBack"></div>
+      <div class="modalBack ripple" id="modalBack"></div>
       <div class="modalCard">
         <div class="modalHead">
           <div class="modalTitle" id="modalTitle">—</div>
@@ -752,141 +629,107 @@
   </div>
 
   <script>
-    // ========= Settings =========
+    // ====== ثابتات ======
     const WHATSAPP_NUMBER = "9647868844984";
     const INSTAGRAM_URL = "https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3";
     const CONTACT_MSG = "السلام عليكم اجيتك من موقع NAS\nاريد اشترك يمكم";
 
-    // سعر صرف تقريبي (غيّره إذا تريد)
+    // سعر صرف تقريبي (غيره إذا تحب)
     const IQD_PER_USD = 1500;
 
     function waLink(text){
       return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
     }
+
     document.getElementById("waTop").href = waLink(CONTACT_MSG);
     document.getElementById("igTop").href = INSTAGRAM_URL;
 
-    // ========= Icons (internet) + stronger visibility =========
-    // Using simpleicons with strong colors so it shows in light/dark
+    // ====== ايقونات (انترنت) + fallback ======
     function iconUrl(key){
-      const t = document.documentElement.getAttribute("data-theme") || "dark";
-      const isLight = t === "light";
+      const theme = document.documentElement.getAttribute("data-theme") || "dark";
+      const isLight = theme === "light";
       const map = {
         chatgpt: isLight ? "https://cdn.simpleicons.org/openai/111827" : "https://cdn.simpleicons.org/openai/ffffff",
         capcut: isLight ? "https://cdn.simpleicons.org/capcut/111827" : "https://cdn.simpleicons.org/capcut/ffffff",
         canva:  "https://cdn.simpleicons.org/canva/00C4CC",
-        todtv:  isLight ? "https://cdn.simpleicons.org/television/111827" : "https://cdn.simpleicons.org/television/ffffff"
+        todtv:  isLight ? "https://cdn.simpleicons.org/television/111827" : "https://cdn.simpleicons.org/television/ffffff",
       };
       return map[key] || (isLight ? "https://cdn.simpleicons.org/appstore/111827" : "https://cdn.simpleicons.org/appstore/ffffff");
     }
 
-    // ========= Products (no "فقط") =========
+    // ====== بيانات المنتجات (بدون كلمة "فقط") ======
     const products = [
       {
-        id:"chatgpt_month",
-        icon:"chatgpt",
-        en:"ChatGPT",
-        ar:"تشات جي بي تي",
-        plan:"Monthly",
-        iqd:15000,
+        id:"chatgpt_month", icon:"chatgpt",
+        en:"ChatGPT", ar:"تشات جي بي تي", plan:"Monthly", iqd:15000,
         how_ar:"التفعيل عبر ايميلك — ترسل الايميل واحنا نفعلك. التفعيل فوري.",
         how_en:"Activation via your email — send your email and we activate it. Instant activation.",
-        short_ar:"مساعد ذكي يساعدك بالكتابة، الترجمة، التلخيص، وأفكار الدراسة والعمل.",
+        short_ar:"مساعد ذكي يساعدك بالكتابة والترجمة والتلخيص وأفكار الدراسة والعمل.",
         short_en:"An AI assistant for writing, translating, summarizing, and generating ideas.",
-        full_ar:"ChatGPT يساعدك بكتابة محتوى ورسائل احترافية، تلخيص مقالات وملفات، ترجمة، أفكار للمشاريع والدراسة، وتنظيم العمل بسرعة. التفعيل يتم على ايميلك.",
-        full_en:"ChatGPT helps you write content and messages, summarize documents, translate, generate ideas, and organize work fast. Activation is done on your email."
+        full_ar:"يساعدك بكتابة محتوى ورسائل، تلخيص ملفات، ترجمة، أفكار للمشاريع والدراسة، وتنظيم العمل بسرعة. التفعيل يتم على ايميلك.",
+        full_en:"Helps you write content, summarize files, translate, generate ideas, and boost productivity. Activated on your email."
       },
       {
-        id:"capcut_month",
-        icon:"capcut",
-        en:"CapCut Pro",
-        ar:"كاب كات برو",
-        plan:"Monthly",
-        iqd:10000,
+        id:"capcut_month", icon:"capcut",
+        en:"CapCut Pro", ar:"كاب كات برو", plan:"Monthly", iqd:10000,
         how_ar:"حساب جاهز شهري — يتم إرسال بيانات الحساب بعد الترتيب.",
         how_en:"Ready monthly account — login details after confirmation.",
         short_ar:"مونتاج سريع: قوالب، مؤثرات، نصوص متحركة وفلاتر جميلة.",
         short_en:"Fast video editing with templates, effects, and animated text.",
-        full_ar:"CapCut ممتاز لصناع المحتوى: انتقالات، تأثيرات، قوالب جاهزة، نصوص متحركة، وخصائص تساعدك تسوي فيديو احترافي بسرعة.",
-        full_en:"CapCut is great for creators: transitions, effects, templates, animated text, and tools to produce pro videos quickly."
+        full_ar:"مناسب لصناع المحتوى: انتقالات، تأثيرات، قوالب جاهزة، ونصوص متحركة تساعدك تطلع فيديو احترافي بسرعة.",
+        full_en:"Great for creators: transitions, effects, templates, and animated text to make pro videos quickly."
       },
       {
-        id:"canva_month",
-        icon:"canva",
-        en:"Canva Pro",
-        ar:"كانفا برو",
-        plan:"Monthly",
-        iqd:5000,
+        id:"canva_month", icon:"canva",
+        en:"Canva Pro", ar:"كانفا برو", plan:"Monthly", iqd:5000,
         how_ar:"اشتراك برو — للتصميمات والبوستات والعروض. التفعيل حسب تفاصيل الطلب.",
         how_en:"Pro plan — designs, posts & presentations. Activation based on order details.",
-        short_ar:"تصميم بسهولة: بوستات، ستوريات، شعارات، وعروض تقديمية بقوالب جاهزة.",
+        short_ar:"تصميم بسهولة: بوستات، ستوريات، شعارات، وعروض بقوالب جاهزة.",
         short_en:"Easy design: posts, stories, logos & presentations with templates.",
-        full_ar:"Canva منصة تصميم على الهاتف والكمبيوتر. تقدر تسوي بوستات انستغرام، ستوريات، إعلانات، شعارات وعروض بسرعة. Pro يفتح لك مكتبة أكبر من العناصر والقوالب.",
-        full_en:"Canva is a design platform for mobile/desktop. Create posts, stories, ads, logos and presentations fast. Pro unlocks more templates and assets."
+        full_ar:"منصة تصميم للهاتف والكمبيوتر. تسوي بوستات وستوري وإعلانات وشعارات بسرعة. Pro يفتح لك مكتبة أكبر من القوالب والعناصر.",
+        full_en:"Design platform for mobile/desktop. Create posts, stories, ads, logos fast. Pro unlocks more templates and assets."
       },
       {
-        id:"todtv_month",
-        icon:"todtv",
-        en:"TOD TV",
-        ar:"تود تي ڤي",
-        plan:"Monthly",
-        iqd:15000,
+        id:"todtv_month", icon:"todtv",
+        en:"TOD TV", ar:"تود تي ڤي", plan:"Monthly", iqd:15000,
         how_ar:"اشتراك شخصي شهري — تقدر تضيف 5 أجهزة (كمبيوتر/شاشة/موبايل).",
         how_en:"Personal monthly subscription — add up to 5 devices (PC/TV/Mobile).",
         short_ar:"مشاهدة مريحة على أكثر من جهاز مع ترتيب دخول واضح.",
         short_en:"Comfortable multi-device streaming with clear access setup.",
-        full_ar:"TOD TV خدمة مشاهدة حسب الباقة. الاشتراك الشخصي الشهري يدعم إضافة حتى 5 أجهزة. يتم ترتيب الدخول حسب تفاصيل الطلب.",
-        full_en:"TOD TV is a streaming service depending on plan. The personal monthly subscription supports up to 5 devices. Access is set up based on your order details."
+        full_ar:"الاشتراك الشخصي يدعم إضافة حتى 5 أجهزة. يتم ترتيب الدخول حسب تفاصيل الطلب.",
+        full_en:"Personal plan supports up to 5 devices. Access setup depends on your order details."
       },
       {
-        id:"chatgpt_go_year",
-        icon:"chatgpt",
-        en:"ChatGPT Go",
-        ar:"جات جي بي تي Go",
-        plan:"Yearly",
-        iqd:40000,
+        id:"chatgpt_go_year", icon:"chatgpt",
+        en:"ChatGPT Go", ar:"جات جي بي تي Go", plan:"Yearly", iqd:40000,
         how_ar:"اشتراك سنوي — يتم ترتيب التفعيل حسب تفاصيل الطلب.",
         how_en:"Yearly subscription — activation based on order details.",
         short_ar:"خيار سنوي للاستخدام الطويل بسعر مناسب.",
         short_en:"A yearly option for long-term use at a better price.",
-        full_ar:"اشتراك سنوي للاستخدام المستمر: كتابة، تلخيص، ترجمة، أفكار محتوى، وتنظيم عمل ودراسة. التفعيل حسب تفاصيل الطلب.",
-        full_en:"Yearly plan for ongoing use: writing, summarizing, translating, content ideas, and productivity. Activation depends on order details."
+        full_ar:"اشتراك سنوي للاستخدام المستمر: كتابة، تلخيص، ترجمة، أفكار محتوى، وتنظيم عمل ودراسة.",
+        full_en:"Yearly plan for writing, summarizing, translating, content ideas, and productivity."
       },
       {
-        id:"chatgpt_plus_year",
-        icon:"chatgpt",
-        en:"ChatGPT Plus",
-        ar:"جات جي بي تي بلس",
-        plan:"Yearly",
-        iqd:80000,
+        id:"chatgpt_plus_year", icon:"chatgpt",
+        en:"ChatGPT Plus", ar:"جات جي بي تي بلس", plan:"Yearly", iqd:80000,
         how_ar:"اشتراك سنوي بلس — يتم ترتيب التفعيل حسب تفاصيل الطلب.",
         how_en:"Yearly Plus — activation based on order details.",
         short_ar:"مناسب للاستخدام اليومي لمن يريد تجربة أقوى وأكثر سلاسة.",
         short_en:"Ideal for daily use with a stronger and smoother experience.",
-        full_ar:"Plus يعطي تجربة أقوى ومزايا إضافية مقارنة بالعادي، مناسب للطلاب وأصحاب الأعمال وصناع المحتوى. التفعيل حسب تفاصيل الطلب.",
-        full_en:"Plus offers a stronger experience and extra features, ideal for students, businesses and creators. Activation depends on order details."
+        full_ar:"مزايا إضافية وتجربة أقوى مقارنة بالعادي، مناسب للطلاب وأصحاب الأعمال وصناع المحتوى.",
+        full_en:"Extra features and stronger experience, ideal for students, businesses and creators."
       }
     ];
 
-    // ========= Language UI =========
-    const langSelect = document.getElementById("langSelect");
-    const quickChip = document.getElementById("quickChip");
-    const heroSubtitle = document.getElementById("heroSubtitle");
-    const sideTitle = document.getElementById("sideTitle");
-    const sideText = document.getElementById("sideText");
-    const productsTitle = document.getElementById("productsTitle");
-    const productsHint = document.getElementById("productsHint");
-    const footerText = document.getElementById("footerText");
-    const themeText = document.getElementById("themeText");
-
+    // ====== لغة + واجهة ======
     let currentLang = localStorage.getItem("nas_lang") || "ar";
 
     const UI = {
-      ar: {
+      ar:{
         quick:"طلب سريع ✨",
-        hero:"اشتراكات وخدمات رقمية بأسلوب مرتب واحترافي.<br>اضغط <b>اطلب الآن</b> وستفتح لك رسالة جاهزة على واتساب.",
+        hero:`اشتراكات وخدمات رقمية بأسلوب مرتب واحترافي.<br>اضغط <b>اطلب الآن</b> وستفتح لك رسالة جاهزة على واتساب.`,
         sideTitle:"طريقة الطلب",
-        side:"1) اختر التطبيق<br>2) اضغط <b>اطلب الآن</b><br>3) تنفتح رسالة جاهزة على واتساب<br><br>يمكنك أيضاً الطلب عبر انستغرام.",
+        side:`1) اختر التطبيق<br>2) اضغط <b>اطلب الآن</b><br>3) تنفتح رسالة جاهزة على واتساب<br><br>يمكنك أيضاً الطلب عبر انستغرام.`,
         title:"التطبيقات المتوفرة",
         hint:"اضغط زر الشرح لكل تطبيق",
         footer:"يمكنك الطلب عبر انستغرام:",
@@ -898,11 +741,11 @@
         meaning:(name)=>`ماذا يعني ${name}؟`,
         planLabel:(plan)=> plan==="Monthly" ? "شهري" : "سنوي",
       },
-      en: {
+      en:{
         quick:"Quick Order ✨",
-        hero:"Digital subscriptions & services, clean and professional.<br>Tap <b>Order Now</b> to open a ready WhatsApp message.",
+        hero:`Digital subscriptions & services, clean and professional.<br>Tap <b>Order Now</b> to open a ready WhatsApp message.`,
         sideTitle:"How to order",
-        side:"1) Choose the app<br>2) Tap <b>Order Now</b><br>3) A ready WhatsApp message opens<br><br>You can also order via Instagram.",
+        side:`1) Choose the app<br>2) Tap <b>Order Now</b><br>3) A ready WhatsApp message opens<br><br>You can also order via Instagram.`,
         title:"Available Apps",
         hint:"Tap the info button for each app",
         footer:"You can order via Instagram:",
@@ -916,7 +759,18 @@
       }
     };
 
-    // ========= Theme Toggle =========
+    // عناصر UI
+    const langSelect = document.getElementById("langSelect");
+    const quickChip = document.getElementById("quickChip");
+    const heroSubtitle = document.getElementById("heroSubtitle");
+    const sideTitle = document.getElementById("sideTitle");
+    const sideText = document.getElementById("sideText");
+    const productsTitle = document.getElementById("productsTitle");
+    const productsHint = document.getElementById("productsHint");
+    const footerText = document.getElementById("footerText");
+    const themeText = document.getElementById("themeText");
+
+    // ====== ثيم ======
     const themeToggle = document.getElementById("themeToggle");
     const savedTheme = localStorage.getItem("nas_theme") || "dark";
     document.documentElement.setAttribute("data-theme", savedTheme);
@@ -930,17 +784,14 @@
       document.documentElement.setAttribute("data-theme", now);
       localStorage.setItem("nas_theme", now);
       updateThemeText();
-      renderProducts(); // refresh icons colors
+      renderProducts(); // لتحديث لون الايقونات
     });
 
-    // ========= Price formatting =========
-    function fmtIQD(n){
-      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
+    // ====== اسعار ======
+    function fmtIQD(n){ return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
     function iqdToUsd(iqd){
       const usd = iqd / IQD_PER_USD;
-      // round to nearest 0.5 for nicer display
-      return Math.round(usd * 2) / 2;
+      return Math.round(usd * 2) / 2; // نصف دولار
     }
     function priceHTML(iqd){
       if(currentLang === "en"){
@@ -950,7 +801,7 @@
       return `${fmtIQD(iqd)} د.ع`;
     }
 
-    // ========= WhatsApp message =========
+    // ====== رسالة الواتساب للطلب ======
     function waMessage(appName, plan){
       const planTxt = UI[currentLang].planLabel(plan);
       if(currentLang === "ar"){
@@ -959,16 +810,8 @@
       return `Hello, can I subscribe to (${appName}) ${planTxt}?\n\nI came from NAS website.\nI want to subscribe.`;
     }
 
-    // ========= Render =========
+    // ====== رندر المنتجات ======
     const grid = document.getElementById("grid");
-    const modal = document.getElementById("modal");
-    const modalBack = document.getElementById("modalBack");
-    const modalClose = document.getElementById("modalClose");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalBody = document.getElementById("modalBody");
-    const modalMore = document.getElementById("modalMore");
-    const modalLess = document.getElementById("modalLess");
-    const modalOrder = document.getElementById("modalOrder");
 
     function escapeHtml(s){
       return String(s)
@@ -980,14 +823,11 @@
     }
 
     function card(p){
-      const planLabel = (currentLang === "ar")
-        ? UI.ar.planLabel(p.plan) // شهري/سنوي بالعربي
-        : UI.en.planLabel(p.plan); // Monthly/Yearly بالانجليزي
-
-      const how = (currentLang === "ar") ? p.how_ar : p.how_en;
-      const infoBtn = UI[currentLang].meaning(p.en);
-      const orderTxt = UI[currentLang].order;
-
+      const isAr = currentLang === "ar";
+      const planLabel = UI[currentLang].planLabel(p.plan); // بالعربي عند العربية، وبالانجليزي عند الانجليزي
+      const how = isAr ? p.how_ar : p.how_en;
+      const infoBtnText = UI[currentLang].meaning(p.en);
+      const orderText = UI[currentLang].order;
       const msg = waMessage(p.en, p.plan);
 
       return `
@@ -1001,6 +841,7 @@
                   <div class="fallback">${escapeHtml(p.en.slice(0,2).toUpperCase())}</div>
                 </div>
                 <div class="names">
+                  <!-- بالواجهة العربية: Canva Pro (شهري)  ✅ -->
                   <div class="en">${escapeHtml(p.en)} <span style="opacity:.78;font-weight:900;">(${escapeHtml(planLabel)})</span></div>
                   <div class="ar">${escapeHtml(p.ar)}</div>
                 </div>
@@ -1012,8 +853,8 @@
             <div class="desc">${escapeHtml(how)}</div>
 
             <div class="ctaRow">
-              <button class="btn btnSmall ripple" data-what="${p.id}">${escapeHtml(infoBtn)}</button>
-              <a class="btn btnWA ripple" href="${waLink(msg)}" target="_blank" rel="noopener">${escapeHtml(orderTxt)}</a>
+              <button class="btn btnSmall ripple" data-what="${p.id}">${escapeHtml(infoBtnText)}</button>
+              <a class="btn btnWA ripple" href="${waLink(msg)}" target="_blank" rel="noopener">${escapeHtml(orderText)}</a>
             </div>
           </div>
         </article>
@@ -1024,11 +865,21 @@
       grid.innerHTML = products.map(card).join("");
     }
 
-    // ========= Modal =========
+    // ====== مودال التفاصيل ======
+    const modal = document.getElementById("modal");
+    const modalBack = document.getElementById("modalBack");
+    const modalClose = document.getElementById("modalClose");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    const modalMore = document.getElementById("modalMore");
+    const modalLess = document.getElementById("modalLess");
+    const modalOrder = document.getElementById("modalOrder");
+
     function openModal(p){
-      const how = (currentLang === "ar") ? p.how_ar : p.how_en;
-      const short = (currentLang === "ar") ? p.short_ar : p.short_en;
-      const full = (currentLang === "ar") ? p.full_ar : p.full_en;
+      const isAr = currentLang === "ar";
+      const short = isAr ? p.short_ar : p.short_en;
+      const full  = isAr ? p.full_ar  : p.full_en;
+      const how   = isAr ? p.how_ar   : p.how_en;
 
       modalTitle.textContent = `${p.en} — ${p.ar}`;
       modalBody.innerHTML = `
@@ -1036,6 +887,7 @@
         <div>${escapeHtml(how)}</div>
         <div id="fullText" style="display:none; margin-top:12px;">${escapeHtml(full)}</div>
       `;
+
       modalMore.textContent = UI[currentLang].more;
       modalLess.textContent = UI[currentLang].less;
       modalOrder.textContent = UI[currentLang].order;
@@ -1078,7 +930,7 @@
       if(p) openModal(p);
     });
 
-    // ========= Ripple + Haptic =========
+    // ====== ripple + رجاج ======
     function addRipple(el, x, y){
       const rect = el.getBoundingClientRect();
       const span = document.createElement("span");
@@ -1099,7 +951,7 @@
       vibrate();
     });
 
-    // ========= Winter effect =========
+    // ====== الثلج ======
     const canvas = document.getElementById("winter");
     const ctx = canvas.getContext("2d", { alpha: true });
     let W=0,H=0, drops=[];
@@ -1108,15 +960,15 @@
       H = canvas.height = window.innerHeight * devicePixelRatio;
       canvas.style.width = window.innerWidth + "px";
       canvas.style.height = window.innerHeight + "px";
-      drops = Array.from({length: Math.min(120, Math.floor(window.innerWidth/8))}, () => makeDrop(true));
+      drops = Array.from({length: Math.min(140, Math.floor(window.innerWidth/7))}, () => makeDrop(true));
     }
     function makeDrop(initial=false){
       const x = Math.random()*W;
       const y = initial ? Math.random()*H : -Math.random()*H*0.2;
-      const r = (Math.random()*2.0 + 0.8) * devicePixelRatio;
-      const sp = (Math.random()*0.7 + 0.35) * devicePixelRatio;
-      const a = Math.random()*0.18 + 0.05;
-      return {x,y,r,sp,a, drift:(Math.random()*0.4-0.2)*devicePixelRatio};
+      const r = (Math.random()*2.2 + 0.9) * devicePixelRatio;
+      const sp = (Math.random()*0.9 + 0.35) * devicePixelRatio;
+      const a = Math.random()*0.20 + 0.06;
+      return {x,y,r,sp,a, drift:(Math.random()*0.5-0.25)*devicePixelRatio};
     }
     function tick(){
       ctx.clearRect(0,0,W,H);
@@ -1126,6 +978,7 @@
         d.x += d.drift;
         if(d.y - d.r > H) drops[i] = makeDrop(false);
         if(d.x < -50 || d.x > W+50) drops[i] = makeDrop(false);
+
         ctx.beginPath();
         ctx.fillStyle = `rgba(255,255,255,${d.a})`;
         ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
@@ -1134,9 +987,8 @@
       requestAnimationFrame(tick);
     }
     window.addEventListener("resize", resize);
-    resize(); tick();
 
-    // ========= Music =========
+    // ====== موسيقى ======
     const bgm = document.getElementById("bgm");
     const musicBtn = document.getElementById("musicBtn");
     let playing = false;
@@ -1149,7 +1001,7 @@
       }
     });
 
-    // ========= Apply language =========
+    // ====== تطبيق اللغة ======
     function applyLang(lang){
       currentLang = lang;
       localStorage.setItem("nas_lang", lang);
@@ -1166,19 +1018,15 @@
       productsHint.textContent = UI[lang].hint;
       footerText.textContent = UI[lang].footer;
 
-      document.getElementById("modalMore").textContent = UI[lang].more;
-      document.getElementById("modalLess").textContent = UI[lang].less;
-      document.getElementById("modalOrder").textContent = UI[lang].order;
-
       updateThemeText();
       renderProducts();
     }
 
-    // init language
-    const langSelect = document.getElementById("langSelect");
+    // ====== init ======
     langSelect.value = currentLang;
-    langSelect.addEventListener("change", ()=> applyLang(langSelect.value));
+    langSelect.addEventListener("change", () => applyLang(langSelect.value));
 
+    resize(); tick();
     updateThemeText();
     applyLang(currentLang);
   </script>
