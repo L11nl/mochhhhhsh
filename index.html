@@ -10,38 +10,38 @@
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
 
     :root{
-      /* Dark (default) */
-      --bg:#070B14;
+      /* Dark (default) — removed cyan */
+      --bg:#070A12;
       --text:#F2F6FF;
-      --muted:#AAB8DA;
+      --muted:#AAB4D8;
 
-      --glass: rgba(255,255,255,.07);
+      --glass: rgba(255,255,255,.075);
       --glass2: rgba(255,255,255,.04);
       --border: rgba(255,255,255,.14);
 
       --radius:24px;
       --shadow: 0 24px 80px rgba(0,0,0,.55);
 
-      --p1:#7C4DFF;
-      --p2:#00E5FF;
-      --p3:#FFDB4D;
-      --p4:#FF4D8D;
+      /* Palette without sky/cyan */
+      --p1:#7C4DFF;   /* purple */
+      --p2:#FF4D8D;   /* pink */
+      --p3:#FFDB4D;   /* gold */
+      --p4:#A855F7;   /* violet */
 
-      --btn: rgba(255,255,255,.08);
+      --btn: rgba(255,255,255,.085);
       --wa:#25D366;
-      --ig:#FF2E74;
 
-      --glow: rgba(124,77,255,.25);
-      --glow2: rgba(0,229,255,.18);
+      --glow1: rgba(124,77,255,.25);
+      --glow2: rgba(255,77,141,.18);
+      --glow3: rgba(255,219,77,.10);
 
       color-scheme: dark;
     }
 
-    /* Light theme */
     [data-theme="light"]{
       --bg:#F6F7FB;
       --text:#0B1220;
-      --muted:#44506A;
+      --muted:#3F4B68;
 
       --glass: rgba(10,18,32,.06);
       --glass2: rgba(10,18,32,.04);
@@ -49,10 +49,11 @@
 
       --shadow: 0 22px 70px rgba(0,0,0,.12);
 
-      --glow: rgba(124,77,255,.16);
-      --glow2: rgba(0,229,255,.14);
-
       --btn: rgba(10,18,32,.06);
+
+      --glow1: rgba(124,77,255,.16);
+      --glow2: rgba(255,77,141,.12);
+      --glow3: rgba(255,219,77,.10);
 
       color-scheme: light;
     }
@@ -64,19 +65,18 @@
       font-family:"Cairo", system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
       color:var(--text);
       background:
-        radial-gradient(1200px 700px at 30% -10%, var(--glow), transparent 55%),
-        radial-gradient(1000px 650px at 90% 5%, var(--glow2), transparent 60%),
+        radial-gradient(1200px 700px at 30% -10%, var(--glow1), transparent 58%),
+        radial-gradient(1000px 650px at 90% 5%, var(--glow2), transparent 62%),
+        radial-gradient(900px 600px at 20% 110%, var(--glow3), transparent 60%),
         var(--bg);
       overflow-x:hidden;
     }
     a{color:inherit}
-
     .container{max-width:1160px;margin:0 auto;padding:22px}
 
     /* Winter background */
     #winter{
-      position:fixed;
-      inset:0;
+      position:fixed; inset:0;
       z-index:0;
       pointer-events:none;
       opacity:.55;
@@ -85,9 +85,7 @@
 
     /* Topbar */
     .topbar{
-      position:sticky;
-      top:0;
-      z-index:70;
+      position:sticky; top:0; z-index:70;
       background: color-mix(in srgb, var(--bg) 55%, transparent);
       backdrop-filter: blur(12px);
       border-bottom:1px solid var(--border);
@@ -115,27 +113,30 @@
       position:relative;
       overflow:hidden;
     }
-    /* Shiny / glowing chip */
+    .chip.shiny{
+      color: var(--text);
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
     .chip.shiny::before{
       content:"";
       position:absolute;
       inset:-2px;
       background: linear-gradient(90deg,
         transparent,
-        rgba(255,255,255,.25),
+        rgba(255,255,255,.22),
         transparent
       );
       transform: translateX(-120%);
-      animation: shine 2.6s ease-in-out infinite;
+      animation: shine 2.2s ease-in-out infinite;
       pointer-events:none;
     }
     @keyframes shine{
       0%{ transform: translateX(-120%); opacity: .0; }
-      20%{ opacity: .7; }
-      60%{ opacity: .25; }
+      20%{ opacity: .75; }
+      70%{ opacity: .22; }
       100%{ transform: translateX(120%); opacity: 0; }
     }
-    .chip b{color:var(--text); font-weight:900}
 
     .topActions{
       display:flex;
@@ -161,14 +162,14 @@
     .iconBtn:active{transform: translateY(0px)}
     .iconBtn svg{width:22px;height:22px}
 
-    /* Toggle + language */
+    /* Language + Theme */
     .select{
       border:1px solid var(--border);
       background: var(--btn);
       color: var(--text);
       padding:10px 12px;
       border-radius:16px;
-      font-weight:800;
+      font-weight:900;
       cursor:pointer;
       outline:none;
       position:relative;
@@ -190,8 +191,8 @@
     }
     .toggle .dot{
       width:12px;height:12px;border-radius:999px;
-      background: linear-gradient(135deg, var(--p2), var(--p1));
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--p2) 20%, transparent);
+      background: linear-gradient(135deg, var(--p1), var(--p2));
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--p1) 18%, transparent);
     }
 
     /* Ripple */
@@ -216,7 +217,6 @@
       gap:16px;
       align-items:stretch;
     }
-
     .heroCard{
       border:1px solid var(--border);
       background: linear-gradient(180deg, var(--glass), var(--glass2));
@@ -225,19 +225,18 @@
       overflow:hidden;
       position:relative;
     }
-    /* Glowing background behind NAS */
     .heroCard::before{
       content:"";
       position:absolute;
       inset:-160px;
-      background: radial-gradient(circle at 30% 30%, rgba(124,77,255,.35), transparent 55%),
-                  radial-gradient(circle at 75% 20%, rgba(0,229,255,.28), transparent 55%),
-                  radial-gradient(circle at 55% 70%, rgba(255,77,141,.18), transparent 60%);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(124,77,255,.35), transparent 55%),
+        radial-gradient(circle at 75% 20%, rgba(255,77,141,.24), transparent 55%),
+        radial-gradient(circle at 55% 70%, rgba(255,219,77,.16), transparent 60%);
       filter: blur(22px);
-      opacity:.9;
+      opacity:.95;
       pointer-events:none;
     }
-
     .heroInner{
       position:relative;
       padding: 20px;
@@ -246,25 +245,30 @@
       gap:12px;
     }
 
-    /* NAS title: cleaner 3D + neon plate */
     .nasPlate{
       position:relative;
       width:fit-content;
       padding: 14px 18px;
       border-radius: 22px;
       border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-      background: color-mix(in srgb, var(--glass) 85%, transparent);
+      background: color-mix(in srgb, var(--glass) 90%, transparent);
       box-shadow:
         0 18px 60px rgba(0,0,0,.35),
-        0 0 0 1px color-mix(in srgb, var(--p2) 18%, transparent) inset;
+        0 0 0 1px color-mix(in srgb, var(--p1) 16%, transparent) inset;
       overflow:hidden;
     }
     .nasPlate::before{
       content:"";
       position:absolute;
       inset:-2px;
-      background: conic-gradient(from 120deg, rgba(124,77,255,.45), rgba(0,229,255,.35), rgba(255,219,77,.22), rgba(255,77,141,.28), rgba(124,77,255,.45));
-      opacity:.25;
+      background: conic-gradient(from 120deg,
+        rgba(124,77,255,.45),
+        rgba(255,77,141,.35),
+        rgba(255,219,77,.28),
+        rgba(168,85,247,.40),
+        rgba(124,77,255,.45)
+      );
+      opacity:.22;
       filter: blur(18px);
       pointer-events:none;
       animation: spin 8s linear infinite;
@@ -277,8 +281,6 @@
       font-weight: 900;
       letter-spacing: 2px;
       line-height:1;
-      transform: translateZ(0);
-      /* crisp 3D: layered shadows */
       text-shadow:
         0 2px 0 rgba(255,255,255,.08),
         0 10px 0 rgba(0,0,0,.22),
@@ -302,7 +304,6 @@
       line-height: 1.9;
       max-width: 62ch;
     }
-
     .hrGlow{
       height:1px;
       background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text) 28%, transparent), transparent);
@@ -354,8 +355,8 @@
       position:absolute;
       inset:-1px;
       background:
-        radial-gradient(700px 260px at 10% 0%, rgba(124,77,255,.14), transparent 60%),
-        radial-gradient(700px 260px at 95% 10%, rgba(0,229,255,.12), transparent 60%);
+        radial-gradient(700px 260px at 10% 0%, rgba(124,77,255,.12), transparent 60%),
+        radial-gradient(700px 260px at 95% 10%, rgba(255,77,141,.10), transparent 60%);
       pointer-events:none;
       opacity:.95;
     }
@@ -366,7 +367,7 @@
       display:flex;
       flex-direction:column;
       gap:12px;
-      min-height: 300px;
+      min-height: 315px;
     }
 
     .headRow{
@@ -382,20 +383,34 @@
       gap:10px;
       min-width:0;
     }
+
+    /* Icon is guaranteed visible */
     .appIcon{
       width:46px;height:46px;
       border-radius: 16px;
       border:1px solid var(--border);
-      background: color-mix(in srgb, var(--glass) 85%, transparent);
+      background:
+        linear-gradient(135deg,
+          color-mix(in srgb, var(--p1) 35%, transparent),
+          color-mix(in srgb, var(--p2) 25%, transparent)
+        );
       display:grid;
       place-items:center;
       overflow:hidden;
       flex:0 0 auto;
+      box-shadow: 0 14px 40px rgba(0,0,0,.18);
     }
     .appIcon img{
       width:28px;height:28px;
       display:block;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.25));
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.22));
+    }
+    .appIcon .fallback{
+      display:none;
+      font-weight: 900;
+      font-size: 14px;
+      color: var(--text);
+      letter-spacing:.5px;
     }
 
     .names{
@@ -429,8 +444,19 @@
       white-space:nowrap;
       background: color-mix(in srgb, var(--glass) 85%, transparent);
       border:1px solid var(--border);
-      padding:6px 10px;
-      border-radius: 999px;
+      padding:8px 10px;
+      border-radius: 16px;
+      line-height: 1.2;
+      text-align:center;
+      min-width: 120px;
+    }
+    .price .sub{
+      display:block;
+      margin-top:6px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+      white-space:nowrap;
     }
 
     .desc{
@@ -456,7 +482,7 @@
       border-radius: 16px;
       cursor:pointer;
       user-select:none;
-      transition: transform .14s ease, filter .14s ease;
+      transition: transform .14s ease, filter .14s ease, color .14s ease;
       position:relative;
       overflow:hidden;
       display:inline-flex;
@@ -468,7 +494,10 @@
       font-size: 13px;
     }
     .btn:hover{filter:brightness(1.06); transform: translateY(-1px)}
-    .btn:active{transform: translateY(0px)}
+    .btn:active{
+      transform: translateY(0px);
+      color: var(--p3); /* text color changes on press */
+    }
 
     .btnSmall{
       padding: 10px 12px;
@@ -484,10 +513,8 @@
 
     /* Modal */
     .modal{
-      position:fixed;
-      inset:0;
-      display:none;
-      z-index: 90;
+      position:fixed; inset:0;
+      display:none; z-index: 90;
     }
     .modal[aria-hidden="false"]{display:block}
     .modalBack{
@@ -585,15 +612,16 @@
       border:1px solid var(--border);
       background: var(--glass);
       font-weight: 900;
-      color: var(--text);
       text-decoration:none;
       position:relative;
       overflow:hidden;
+      /* standout color */
+      color: var(--p2);
     }
     .badge .dot{
       width:10px;height:10px;border-radius:999px;
-      background: linear-gradient(135deg, var(--ig), var(--p1));
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--ig) 18%, transparent);
+      background: linear-gradient(135deg, var(--p2), var(--p1));
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--p2) 18%, transparent);
     }
 
     @media (max-width: 980px){
@@ -614,22 +642,19 @@
   <div class="layer">
     <div class="topbar">
       <div class="container topbar__inner">
-        <div class="chip shiny" id="quickChip">طلب سريع ✨</div>
+        <div class="chip shiny ripple" id="quickChip">طلب سريع ✨</div>
 
         <div class="topActions">
-          <!-- Language -->
           <select class="select ripple" id="langSelect" aria-label="Language">
             <option value="ar">🇮🇶 العربية</option>
             <option value="en">English</option>
           </select>
 
-          <!-- Theme -->
           <button class="toggle ripple" id="themeToggle" type="button" aria-label="Theme">
             <span class="dot"></span>
             <span id="themeText">ليلي</span>
           </button>
 
-          <!-- WhatsApp -->
           <a class="iconBtn ripple" id="waTop" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M20.6 3.4A11 11 0 0 0 2.9 16.2L2 22l5.9-.8A11 11 0 0 0 20.6 3.4Z" stroke="currentColor" stroke-width="1.4"/>
@@ -637,7 +662,6 @@
             </svg>
           </a>
 
-          <!-- Instagram -->
           <a class="iconBtn ripple" id="igTop" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9A4.7 4.7 0 0 1 2.8 16.5v-9A4.7 4.7 0 0 1 7.5 2.8Z" stroke="currentColor" stroke-width="1.4"/>
@@ -720,7 +744,7 @@
     <!-- Music -->
     <audio id="bgm" src="winter.mp3" loop preload="none"></audio>
     <button class="musicBtn ripple" id="musicBtn" aria-label="Music">
-      <svg id="musicIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M10 5v12.2A2.8 2.8 0 1 1 8.6 15V7l10-2v9.2A2.8 2.8 0 1 1 16.6 12V5l-6 1Z"
               stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -728,134 +752,123 @@
   </div>
 
   <script>
-    // =================== Basics ===================
+    // ========= Settings =========
     const WHATSAPP_NUMBER = "9647868844984";
     const INSTAGRAM_URL = "https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3";
-
-    // رسالة الواتساب/الانستا الجديدة (حسب طلبك)
     const CONTACT_MSG = "السلام عليكم اجيتك من موقع NAS\nاريد اشترك يمكم";
 
-    const waTop = document.getElementById("waTop");
-    const igTop = document.getElementById("igTop");
+    // سعر صرف تقريبي (غيّره إذا تريد)
+    const IQD_PER_USD = 1500;
+
     function waLink(text){
       return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
     }
-    waTop.href = waLink(CONTACT_MSG);
-    igTop.href = INSTAGRAM_URL; // انستغرام ما يقبل text مثل واتساب، فخليناه رابط مباشر
+    document.getElementById("waTop").href = waLink(CONTACT_MSG);
+    document.getElementById("igTop").href = INSTAGRAM_URL;
 
-    // =================== App icons from internet ===================
-    // SimpleIcons / good quality
-    const iconUrl = (key) => {
+    // ========= Icons (internet) + stronger visibility =========
+    // Using simpleicons with strong colors so it shows in light/dark
+    function iconUrl(key){
+      const t = document.documentElement.getAttribute("data-theme") || "dark";
+      const isLight = t === "light";
       const map = {
-        chatgpt: "https://cdn.simpleicons.org/openai/ffffff",
-        capcut: "https://cdn.simpleicons.org/capcut/ffffff",
-        canva: "https://cdn.simpleicons.org/canva/00C4CC",
-        todtv: "https://cdn.simpleicons.org/television/ffffff"
+        chatgpt: isLight ? "https://cdn.simpleicons.org/openai/111827" : "https://cdn.simpleicons.org/openai/ffffff",
+        capcut: isLight ? "https://cdn.simpleicons.org/capcut/111827" : "https://cdn.simpleicons.org/capcut/ffffff",
+        canva:  "https://cdn.simpleicons.org/canva/00C4CC",
+        todtv:  isLight ? "https://cdn.simpleicons.org/television/111827" : "https://cdn.simpleicons.org/television/ffffff"
       };
-      return map[key] || "https://cdn.simpleicons.org/appstore/ffffff";
-    };
+      return map[key] || (isLight ? "https://cdn.simpleicons.org/appstore/111827" : "https://cdn.simpleicons.org/appstore/ffffff");
+    }
 
-    // =================== Products (English names as requested) ===================
+    // ========= Products (no "فقط") =========
     const products = [
       {
-        id: "chatgpt_month",
-        icon: "chatgpt",
-        en: "ChatGPT",
-        ar: "تشات جي بي تي",
-        plan_ar: "شهري",
-        plan_en: "Monthly",
-        price_ar: "15,000 د.ع",
-        price_en: "15,000 IQD",
-        how_ar: "التفعيل عبر ايميلك فقط — ترسل الايميل واحنا نفعلك. التفعيل فوري.",
-        how_en: "Activation via your email only — send your email and we activate it. Instant activation.",
-        short_ar: "مساعد ذكي يساعدك بالكتابة، الترجمة، التلخيص، وأفكار الدراسة والعمل.",
-        short_en: "An AI assistant for writing, translating, summarizing, and generating ideas.",
-        full_ar: "ChatGPT يساعدك بكتابة محتوى ورسائل احترافية، تلخيص مقالات وملفات، ترجمة، أفكار للمشاريع والدراسة، وتنظيم العمل بسرعة. التفعيل يتم على ايميلك.",
-        full_en: "ChatGPT helps you write content and messages, summarize documents, translate, generate ideas, and organize work fast. Activation is done on your email.",
+        id:"chatgpt_month",
+        icon:"chatgpt",
+        en:"ChatGPT",
+        ar:"تشات جي بي تي",
+        plan:"Monthly",
+        iqd:15000,
+        how_ar:"التفعيل عبر ايميلك — ترسل الايميل واحنا نفعلك. التفعيل فوري.",
+        how_en:"Activation via your email — send your email and we activate it. Instant activation.",
+        short_ar:"مساعد ذكي يساعدك بالكتابة، الترجمة، التلخيص، وأفكار الدراسة والعمل.",
+        short_en:"An AI assistant for writing, translating, summarizing, and generating ideas.",
+        full_ar:"ChatGPT يساعدك بكتابة محتوى ورسائل احترافية، تلخيص مقالات وملفات، ترجمة، أفكار للمشاريع والدراسة، وتنظيم العمل بسرعة. التفعيل يتم على ايميلك.",
+        full_en:"ChatGPT helps you write content and messages, summarize documents, translate, generate ideas, and organize work fast. Activation is done on your email."
       },
       {
-        id: "capcut_month",
-        icon: "capcut",
-        en: "CapCut Pro",
-        ar: "كاب كات برو",
-        plan_ar: "شهري",
-        plan_en: "Monthly",
-        price_ar: "10,000 د.ع",
-        price_en: "10,000 IQD",
-        how_ar: "حساب جاهز شهري — يتم إرسال بيانات الحساب بعد الترتيب.",
-        how_en: "Ready monthly account — login details after confirmation.",
-        short_ar: "مونتاج سريع: قوالب، مؤثرات، نصوص متحركة وفلاتر جميلة.",
-        short_en: "Fast video editing with templates, effects, and animated text.",
-        full_ar: "CapCut ممتاز لصناع المحتوى: انتقالات، تأثيرات، قوالب جاهزة، نصوص متحركة، وخصائص تساعدك تسوي فيديو احترافي بسرعة.",
-        full_en: "CapCut is great for creators: transitions, effects, templates, animated text, and tools to produce pro videos quickly.",
+        id:"capcut_month",
+        icon:"capcut",
+        en:"CapCut Pro",
+        ar:"كاب كات برو",
+        plan:"Monthly",
+        iqd:10000,
+        how_ar:"حساب جاهز شهري — يتم إرسال بيانات الحساب بعد الترتيب.",
+        how_en:"Ready monthly account — login details after confirmation.",
+        short_ar:"مونتاج سريع: قوالب، مؤثرات، نصوص متحركة وفلاتر جميلة.",
+        short_en:"Fast video editing with templates, effects, and animated text.",
+        full_ar:"CapCut ممتاز لصناع المحتوى: انتقالات، تأثيرات، قوالب جاهزة، نصوص متحركة، وخصائص تساعدك تسوي فيديو احترافي بسرعة.",
+        full_en:"CapCut is great for creators: transitions, effects, templates, animated text, and tools to produce pro videos quickly."
       },
       {
-        id: "canva_month",
-        icon: "canva",
-        en: "Canva Pro",
-        ar: "كانفا برو",
-        plan_ar: "شهري",
-        plan_en: "Monthly",
-        price_ar: "5,000 د.ع",
-        price_en: "5,000 IQD",
-        how_ar: "اشتراك برو — للتصميمات والبوستات والعروض. التفعيل حسب تفاصيل الطلب.",
-        how_en: "Pro plan — designs, posts & presentations. Activation based on order details.",
-        short_ar: "تصميم بسهولة: بوستات، ستوريات، شعارات، وعروض تقديمية بقوالب جاهزة.",
-        short_en: "Easy design: posts, stories, logos & presentations with templates.",
-        full_ar: "Canva منصة تصميم على الهاتف والكمبيوتر. تقدر تسوي بوستات انستغرام، ستوريات، إعلانات، شعارات وعروض بسرعة. Pro يفتح لك مكتبة أكبر من العناصر والقوالب.",
-        full_en: "Canva is a design platform for mobile/desktop. Create posts, stories, ads, logos and presentations fast. Pro unlocks more templates and assets.",
+        id:"canva_month",
+        icon:"canva",
+        en:"Canva Pro",
+        ar:"كانفا برو",
+        plan:"Monthly",
+        iqd:5000,
+        how_ar:"اشتراك برو — للتصميمات والبوستات والعروض. التفعيل حسب تفاصيل الطلب.",
+        how_en:"Pro plan — designs, posts & presentations. Activation based on order details.",
+        short_ar:"تصميم بسهولة: بوستات، ستوريات، شعارات، وعروض تقديمية بقوالب جاهزة.",
+        short_en:"Easy design: posts, stories, logos & presentations with templates.",
+        full_ar:"Canva منصة تصميم على الهاتف والكمبيوتر. تقدر تسوي بوستات انستغرام، ستوريات، إعلانات، شعارات وعروض بسرعة. Pro يفتح لك مكتبة أكبر من العناصر والقوالب.",
+        full_en:"Canva is a design platform for mobile/desktop. Create posts, stories, ads, logos and presentations fast. Pro unlocks more templates and assets."
       },
       {
-        id: "todtv_month",
-        icon: "todtv",
-        en: "TOD TV",
-        ar: "تود تي ڤي",
-        plan_ar: "شهري",
-        plan_en: "Monthly",
-        price_ar: "15,000 د.ع",
-        price_en: "15,000 IQD",
-        how_ar: "اشتراك شخصي شهري — تقدر تضيف 5 أجهزة (كمبيوتر/شاشة/موبايل).",
-        how_en: "Personal monthly subscription — add up to 5 devices (PC/TV/Mobile).",
-        short_ar: "مشاهدة مريحة على أكثر من جهاز مع ترتيب دخول واضح.",
-        short_en: "Comfortable multi-device streaming with clear access setup.",
-        full_ar: "TOD TV خدمة مشاهدة حسب الباقة. الاشتراك الشخصي الشهري يدعم إضافة حتى 5 أجهزة. يتم ترتيب الدخول حسب تفاصيل الطلب.",
-        full_en: "TOD TV is a streaming service depending on plan. The personal monthly subscription supports up to 5 devices. Access is set up based on your order details.",
+        id:"todtv_month",
+        icon:"todtv",
+        en:"TOD TV",
+        ar:"تود تي ڤي",
+        plan:"Monthly",
+        iqd:15000,
+        how_ar:"اشتراك شخصي شهري — تقدر تضيف 5 أجهزة (كمبيوتر/شاشة/موبايل).",
+        how_en:"Personal monthly subscription — add up to 5 devices (PC/TV/Mobile).",
+        short_ar:"مشاهدة مريحة على أكثر من جهاز مع ترتيب دخول واضح.",
+        short_en:"Comfortable multi-device streaming with clear access setup.",
+        full_ar:"TOD TV خدمة مشاهدة حسب الباقة. الاشتراك الشخصي الشهري يدعم إضافة حتى 5 أجهزة. يتم ترتيب الدخول حسب تفاصيل الطلب.",
+        full_en:"TOD TV is a streaming service depending on plan. The personal monthly subscription supports up to 5 devices. Access is set up based on your order details."
       },
       {
-        id: "chatgpt_go_year",
-        icon: "chatgpt",
-        en: "ChatGPT Go",
-        ar: "جات جي بي تي Go",
-        plan_ar: "سنوي",
-        plan_en: "Yearly",
-        price_ar: "40,000 د.ع",
-        price_en: "40,000 IQD",
-        how_ar: "اشتراك سنوي — يتم ترتيب التفعيل حسب تفاصيل الطلب.",
-        how_en: "Yearly subscription — activation based on order details.",
-        short_ar: "خيار سنوي للاستخدام الطويل بسعر مناسب.",
-        short_en: "A yearly option for long-term use at a better price.",
-        full_ar: "اشتراك سنوي للاستخدام المستمر: كتابة، تلخيص، ترجمة، أفكار محتوى، وتنظيم عمل ودراسة. التفعيل حسب تفاصيل الطلب.",
-        full_en: "Yearly plan for ongoing use: writing, summarizing, translating, content ideas, and productivity. Activation depends on order details.",
+        id:"chatgpt_go_year",
+        icon:"chatgpt",
+        en:"ChatGPT Go",
+        ar:"جات جي بي تي Go",
+        plan:"Yearly",
+        iqd:40000,
+        how_ar:"اشتراك سنوي — يتم ترتيب التفعيل حسب تفاصيل الطلب.",
+        how_en:"Yearly subscription — activation based on order details.",
+        short_ar:"خيار سنوي للاستخدام الطويل بسعر مناسب.",
+        short_en:"A yearly option for long-term use at a better price.",
+        full_ar:"اشتراك سنوي للاستخدام المستمر: كتابة، تلخيص، ترجمة، أفكار محتوى، وتنظيم عمل ودراسة. التفعيل حسب تفاصيل الطلب.",
+        full_en:"Yearly plan for ongoing use: writing, summarizing, translating, content ideas, and productivity. Activation depends on order details."
       },
       {
-        id: "chatgpt_plus_year",
-        icon: "chatgpt",
-        en: "ChatGPT Plus",
-        ar: "جات جي بي تي بلس",
-        plan_ar: "سنوي",
-        plan_en: "Yearly",
-        price_ar: "80,000 د.ع",
-        price_en: "80,000 IQD",
-        how_ar: "اشتراك سنوي بلس — يتم ترتيب التفعيل حسب تفاصيل الطلب.",
-        how_en: "Yearly Plus — activation based on order details.",
-        short_ar: "مناسب للاستخدام اليومي لمن يريد تجربة أقوى وأكثر سلاسة.",
-        short_en: "Ideal for daily use with a stronger and smoother experience.",
-        full_ar: "Plus يعطي تجربة أقوى ومزايا إضافية مقارنة بالعادي، مناسب للطلاب وأصحاب الأعمال وصناع المحتوى. التفعيل حسب تفاصيل الطلب.",
-        full_en: "Plus offers a stronger experience and extra features, ideal for students, businesses and creators. Activation depends on order details.",
+        id:"chatgpt_plus_year",
+        icon:"chatgpt",
+        en:"ChatGPT Plus",
+        ar:"جات جي بي تي بلس",
+        plan:"Yearly",
+        iqd:80000,
+        how_ar:"اشتراك سنوي بلس — يتم ترتيب التفعيل حسب تفاصيل الطلب.",
+        how_en:"Yearly Plus — activation based on order details.",
+        short_ar:"مناسب للاستخدام اليومي لمن يريد تجربة أقوى وأكثر سلاسة.",
+        short_en:"Ideal for daily use with a stronger and smoother experience.",
+        full_ar:"Plus يعطي تجربة أقوى ومزايا إضافية مقارنة بالعادي، مناسب للطلاب وأصحاب الأعمال وصناع المحتوى. التفعيل حسب تفاصيل الطلب.",
+        full_en:"Plus offers a stronger experience and extra features, ideal for students, businesses and creators. Activation depends on order details."
       }
     ];
 
-    // =================== Language System ===================
+    // ========= Language UI =========
     const langSelect = document.getElementById("langSelect");
     const quickChip = document.getElementById("quickChip");
     const heroSubtitle = document.getElementById("heroSubtitle");
@@ -870,85 +883,92 @@
 
     const UI = {
       ar: {
-        quick: "طلب سريع ✨",
-        hero: "اشتراكات وخدمات رقمية بأسلوب مرتب واحترافي.<br>اضغط <b>اطلب الآن</b> وستفتح لك رسالة جاهزة على واتساب.",
-        sideTitle: "طريقة الطلب",
-        side: "1) اختر المنتج<br>2) اضغط <b>اطلب الآن</b><br>3) تنفتح رسالة جاهزة على واتساب<br><br>يمكنك أيضاً الطلب عبر انستغرام.",
-        title: "التطبيقات المتوفرة",
-        hint: "اضغط زر الشرح لكل تطبيق",
-        footer: "يمكنك الطلب عبر انستغرام:",
-        order: "اطلب الآن",
-        more: "عرض المزيد",
-        less: "إخفاء",
-        themeDark: "ليلي",
-        themeLight: "نهاري",
-        meaning: (name) => `ماذا يعني ${name}؟`,
+        quick:"طلب سريع ✨",
+        hero:"اشتراكات وخدمات رقمية بأسلوب مرتب واحترافي.<br>اضغط <b>اطلب الآن</b> وستفتح لك رسالة جاهزة على واتساب.",
+        sideTitle:"طريقة الطلب",
+        side:"1) اختر التطبيق<br>2) اضغط <b>اطلب الآن</b><br>3) تنفتح رسالة جاهزة على واتساب<br><br>يمكنك أيضاً الطلب عبر انستغرام.",
+        title:"التطبيقات المتوفرة",
+        hint:"اضغط زر الشرح لكل تطبيق",
+        footer:"يمكنك الطلب عبر انستغرام:",
+        order:"اطلب الآن",
+        more:"عرض المزيد",
+        less:"إخفاء",
+        themeDark:"ليلي",
+        themeLight:"نهاري",
+        meaning:(name)=>`ماذا يعني ${name}؟`,
+        planLabel:(plan)=> plan==="Monthly" ? "شهري" : "سنوي",
       },
       en: {
-        quick: "Quick Order ✨",
-        hero: "Digital subscriptions & services, clean and professional.<br>Tap <b>Order Now</b> to open a ready WhatsApp message.",
-        sideTitle: "How to order",
-        side: "1) Choose an app<br>2) Tap <b>Order Now</b><br>3) A ready WhatsApp message opens<br><br>You can also order via Instagram.",
-        title: "Available Apps",
-        hint: "Tap the info button for each app",
-        footer: "You can order via Instagram:",
-        order: "Order Now",
-        more: "Show more",
-        less: "Hide",
-        themeDark: "Night",
-        themeLight: "Day",
-        meaning: (name) => `What does ${name} mean?`,
+        quick:"Quick Order ✨",
+        hero:"Digital subscriptions & services, clean and professional.<br>Tap <b>Order Now</b> to open a ready WhatsApp message.",
+        sideTitle:"How to order",
+        side:"1) Choose the app<br>2) Tap <b>Order Now</b><br>3) A ready WhatsApp message opens<br><br>You can also order via Instagram.",
+        title:"Available Apps",
+        hint:"Tap the info button for each app",
+        footer:"You can order via Instagram:",
+        order:"Order Now",
+        more:"Show more",
+        less:"Hide",
+        themeDark:"Night",
+        themeLight:"Day",
+        meaning:(name)=>`What does ${name} mean?`,
+        planLabel:(plan)=> plan==="Monthly" ? "Monthly" : "Yearly",
       }
     };
 
-    function applyLang(lang){
-      currentLang = lang;
-      localStorage.setItem("nas_lang", lang);
-
-      const isAr = lang === "ar";
-      document.documentElement.lang = isAr ? "ar" : "en";
-      document.documentElement.dir = isAr ? "rtl" : "ltr";
-
-      quickChip.textContent = UI[lang].quick;
-      heroSubtitle.innerHTML = UI[lang].hero;
-      sideTitle.textContent = UI[lang].sideTitle;
-      sideText.innerHTML = UI[lang].side;
-      productsTitle.textContent = UI[lang].title;
-      productsHint.textContent = UI[lang].hint;
-      footerText.textContent = UI[lang].footer;
-
-      renderProducts();
-      // update modal labels
-      document.getElementById("modalMore").textContent = UI[lang].more;
-      document.getElementById("modalLess").textContent = UI[lang].less;
-      document.getElementById("modalOrder").textContent = UI[lang].order;
-      updateThemeText();
-    }
-
-    langSelect.value = currentLang;
-    langSelect.addEventListener("change", () => applyLang(langSelect.value));
-
-    // =================== Theme Toggle ===================
+    // ========= Theme Toggle =========
     const themeToggle = document.getElementById("themeToggle");
     const savedTheme = localStorage.getItem("nas_theme") || "dark";
     document.documentElement.setAttribute("data-theme", savedTheme);
 
     function updateThemeText(){
       const t = document.documentElement.getAttribute("data-theme") || "dark";
-      const lang = currentLang;
-      themeText.textContent = (t === "dark") ? UI[lang].themeDark : UI[lang].themeLight;
+      themeText.textContent = (t === "dark") ? UI[currentLang].themeDark : UI[currentLang].themeLight;
     }
-    updateThemeText();
-
     themeToggle.addEventListener("click", () => {
       const now = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", now);
       localStorage.setItem("nas_theme", now);
       updateThemeText();
+      renderProducts(); // refresh icons colors
     });
 
-    // =================== Render Products ===================
+    // ========= Price formatting =========
+    function fmtIQD(n){
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    function iqdToUsd(iqd){
+      const usd = iqd / IQD_PER_USD;
+      // round to nearest 0.5 for nicer display
+      return Math.round(usd * 2) / 2;
+    }
+    function priceHTML(iqd){
+      if(currentLang === "en"){
+        const usd = iqdToUsd(iqd);
+        return `$${usd}<span class="sub">${fmtIQD(iqd)} IQD</span>`;
+      }
+      return `${fmtIQD(iqd)} د.ع`;
+    }
+
+    // ========= WhatsApp message =========
+    function waMessage(appName, plan){
+      const planTxt = UI[currentLang].planLabel(plan);
+      if(currentLang === "ar"){
+        return `السلام عليكم ممكن اشتراك في تطبيق (${appName}) ${planTxt}\n\nاني اجيتك من موقع NAS\nاريد اشترك يمكم`;
+      }
+      return `Hello, can I subscribe to (${appName}) ${planTxt}?\n\nI came from NAS website.\nI want to subscribe.`;
+    }
+
+    // ========= Render =========
     const grid = document.getElementById("grid");
+    const modal = document.getElementById("modal");
+    const modalBack = document.getElementById("modalBack");
+    const modalClose = document.getElementById("modalClose");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    const modalMore = document.getElementById("modalMore");
+    const modalLess = document.getElementById("modalLess");
+    const modalOrder = document.getElementById("modalOrder");
 
     function escapeHtml(s){
       return String(s)
@@ -959,29 +979,16 @@
         .replaceAll("'","&#039;");
     }
 
-    function waMessage(appName, plan){
-      // نفس الرسالة اللي طلبتها + نخلي الخطة تلقائي
-      const planTxt = (currentLang === "ar")
-        ? (plan === "Monthly" ? "الشهري" : "السنوي")
-        : (plan === "Monthly" ? "monthly" : "yearly");
-      const app = appName;
-      return (currentLang === "ar")
-        ? `السلام عليكم ممكن اشتراك في تطبيق (${app}) ${planTxt}\n\nاني اجيتك من موقع NAS\nاريد اشترك يمكم`
-        : `Hello, can I subscribe to (${app}) ${planTxt}?\n\nI came from NAS website.\nI want to subscribe.`;
-    }
-
     function card(p){
-      const isAr = currentLang === "ar";
-      const titleMain = p.en;     // English name as requested
-      const sub = p.ar;           // Arabic secondary
-      const plan = p.plan_en;     // Monthly/Yearly
-      const price = isAr ? p.price_ar : p.price_en;
-      const how = isAr ? p.how_ar : p.how_en;
+      const planLabel = (currentLang === "ar")
+        ? UI.ar.planLabel(p.plan) // شهري/سنوي بالعربي
+        : UI.en.planLabel(p.plan); // Monthly/Yearly بالانجليزي
 
-      const infoBtnText = UI[currentLang].meaning(p.en);
-      const orderText = UI[currentLang].order;
+      const how = (currentLang === "ar") ? p.how_ar : p.how_en;
+      const infoBtn = UI[currentLang].meaning(p.en);
+      const orderTxt = UI[currentLang].order;
 
-      const msg = waMessage(p.en, plan);
+      const msg = waMessage(p.en, p.plan);
 
       return `
         <article class="card">
@@ -989,21 +996,24 @@
             <div class="headRow">
               <div class="app">
                 <div class="appIcon" aria-hidden="true">
-                  <img src="${iconUrl(p.icon)}" alt="${escapeHtml(p.en)} icon" />
+                  <img src="${iconUrl(p.icon)}" alt="${escapeHtml(p.en)} icon"
+                       onerror="this.style.display='none'; this.parentElement.querySelector('.fallback').style.display='block';" />
+                  <div class="fallback">${escapeHtml(p.en.slice(0,2).toUpperCase())}</div>
                 </div>
                 <div class="names">
-                  <div class="en">${escapeHtml(titleMain)} <span style="opacity:.75; font-weight:900;">(${escapeHtml(plan)})</span></div>
-                  <div class="ar">${escapeHtml(sub)}</div>
+                  <div class="en">${escapeHtml(p.en)} <span style="opacity:.78;font-weight:900;">(${escapeHtml(planLabel)})</span></div>
+                  <div class="ar">${escapeHtml(p.ar)}</div>
                 </div>
               </div>
-              <div class="price">${escapeHtml(price)}</div>
+
+              <div class="price">${priceHTML(p.iqd)}</div>
             </div>
 
             <div class="desc">${escapeHtml(how)}</div>
 
             <div class="ctaRow">
-              <button class="btn btnSmall ripple" data-what="${p.id}">${escapeHtml(infoBtnText)}</button>
-              <a class="btn btnWA ripple" href="${waLink(msg)}" target="_blank" rel="noopener">${escapeHtml(orderText)}</a>
+              <button class="btn btnSmall ripple" data-what="${p.id}">${escapeHtml(infoBtn)}</button>
+              <a class="btn btnWA ripple" href="${waLink(msg)}" target="_blank" rel="noopener">${escapeHtml(orderTxt)}</a>
             </div>
           </div>
         </article>
@@ -1014,49 +1024,34 @@
       grid.innerHTML = products.map(card).join("");
     }
 
-    // =================== Modal ===================
-    const modal = document.getElementById("modal");
-    const modalBack = document.getElementById("modalBack");
-    const modalClose = document.getElementById("modalClose");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalBody = document.getElementById("modalBody");
-    const modalMore = document.getElementById("modalMore");
-    const modalLess = document.getElementById("modalLess");
-    const modalOrder = document.getElementById("modalOrder");
-    let currentProduct = null;
-
+    // ========= Modal =========
     function openModal(p){
-      currentProduct = p;
-      const isAr = currentLang === "ar";
+      const how = (currentLang === "ar") ? p.how_ar : p.how_en;
+      const short = (currentLang === "ar") ? p.short_ar : p.short_en;
+      const full = (currentLang === "ar") ? p.full_ar : p.full_en;
 
-      const title = `${p.en} — ${p.ar}`;
-      modalTitle.textContent = title;
-
-      const short = isAr ? p.short_ar : p.short_en;
-      const full  = isAr ? p.full_ar  : p.full_en;
-      const how   = isAr ? p.how_ar   : p.how_en;
-
+      modalTitle.textContent = `${p.en} — ${p.ar}`;
       modalBody.innerHTML = `
         <div class="lead">${escapeHtml(short)}</div>
         <div>${escapeHtml(how)}</div>
         <div id="fullText" style="display:none; margin-top:12px;">${escapeHtml(full)}</div>
       `;
+      modalMore.textContent = UI[currentLang].more;
+      modalLess.textContent = UI[currentLang].less;
+      modalOrder.textContent = UI[currentLang].order;
+
+      modalOrder.href = waLink(waMessage(p.en, p.plan));
 
       modalMore.style.display = "inline-flex";
       modalLess.style.display = "none";
 
-      modalOrder.href = waLink(waMessage(p.en, p.plan_en));
-
       modal.setAttribute("aria-hidden","false");
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow="hidden";
     }
-
     function closeModal(){
       modal.setAttribute("aria-hidden","true");
-      document.body.style.overflow = "";
-      currentProduct = null;
+      document.body.style.overflow="";
     }
-
     modalBack.addEventListener("click", closeModal);
     modalClose.addEventListener("click", closeModal);
 
@@ -1067,7 +1062,6 @@
       modalMore.style.display = "none";
       modalLess.style.display = "inline-flex";
     });
-
     modalLess.addEventListener("click", () => {
       const full = document.getElementById("fullText");
       if(!full) return;
@@ -1084,7 +1078,7 @@
       if(p) openModal(p);
     });
 
-    // =================== Ripple + haptic ===================
+    // ========= Ripple + Haptic =========
     function addRipple(el, x, y){
       const rect = el.getBoundingClientRect();
       const span = document.createElement("span");
@@ -1096,9 +1090,8 @@
       el.appendChild(span);
       span.addEventListener("animationend", () => span.remove());
     }
-    function vibrate(){
-      if (navigator.vibrate) navigator.vibrate(18);
-    }
+    function vibrate(){ if(navigator.vibrate) navigator.vibrate(18); }
+
     document.addEventListener("pointerdown", (e) => {
       const t = e.target.closest(".ripple");
       if(!t) return;
@@ -1106,7 +1099,7 @@
       vibrate();
     });
 
-    // =================== Winter effect ===================
+    // ========= Winter effect =========
     const canvas = document.getElementById("winter");
     const ctx = canvas.getContext("2d", { alpha: true });
     let W=0,H=0, drops=[];
@@ -1133,7 +1126,6 @@
         d.x += d.drift;
         if(d.y - d.r > H) drops[i] = makeDrop(false);
         if(d.x < -50 || d.x > W+50) drops[i] = makeDrop(false);
-
         ctx.beginPath();
         ctx.fillStyle = `rgba(255,255,255,${d.a})`;
         ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
@@ -1144,27 +1136,51 @@
     window.addEventListener("resize", resize);
     resize(); tick();
 
-    // =================== Music ===================
+    // ========= Music =========
     const bgm = document.getElementById("bgm");
     const musicBtn = document.getElementById("musicBtn");
     let playing = false;
     musicBtn.addEventListener("click", async () => {
       try{
-        if(!playing){
-          await bgm.play();
-          playing = true;
-        }else{
-          bgm.pause();
-          playing = false;
-        }
+        if(!playing){ await bgm.play(); playing = true; }
+        else{ bgm.pause(); playing = false; }
       }catch{
         alert("حتى تشتغل الموسيقى: ضع ملف باسم winter.mp3 بجانب index.html");
       }
     });
 
-    // =================== Init ===================
+    // ========= Apply language =========
+    function applyLang(lang){
+      currentLang = lang;
+      localStorage.setItem("nas_lang", lang);
+
+      const isAr = lang === "ar";
+      document.documentElement.lang = isAr ? "ar" : "en";
+      document.documentElement.dir = isAr ? "rtl" : "ltr";
+
+      quickChip.textContent = UI[lang].quick;
+      heroSubtitle.innerHTML = UI[lang].hero;
+      sideTitle.textContent = UI[lang].sideTitle;
+      sideText.innerHTML = UI[lang].side;
+      productsTitle.textContent = UI[lang].title;
+      productsHint.textContent = UI[lang].hint;
+      footerText.textContent = UI[lang].footer;
+
+      document.getElementById("modalMore").textContent = UI[lang].more;
+      document.getElementById("modalLess").textContent = UI[lang].less;
+      document.getElementById("modalOrder").textContent = UI[lang].order;
+
+      updateThemeText();
+      renderProducts();
+    }
+
+    // init language
+    const langSelect = document.getElementById("langSelect");
+    langSelect.value = currentLang;
+    langSelect.addEventListener("change", ()=> applyLang(langSelect.value));
+
+    updateThemeText();
     applyLang(currentLang);
-    renderProducts();
   </script>
 </body>
 </html>
