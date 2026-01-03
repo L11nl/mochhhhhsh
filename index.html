@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NAS</title>
+  <meta name="description" content="NAS - Digital subscriptions store" />
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
@@ -21,11 +22,11 @@
       --radius:24px;
       --shadow: 0 24px 80px rgba(0,0,0,.55);
 
-      /* بدون لون سمائي */
-      --p1:#7C4DFF;   /* purple */
-      --p2:#FF4D8D;   /* pink */
-      --p3:#FFDB4D;   /* gold */
-      --p4:#A855F7;   /* violet */
+      /* بدون لون سمائي/بنفسجي على الكروت */
+      --p1:#7C4DFF;   /* purple for title only */
+      --p2:#FF4D8D;   /* pink for title only */
+      --p3:#FFDB4D;   /* gold for accents */
+      --p4:#A855F7;   /* violet for title only */
 
       --btn: rgba(255,255,255,.085);
       --wa:#25D366;
@@ -48,6 +49,14 @@
       color-scheme: light;
     }
 
+    /* ✅ منع التحديد المزعج باللمس */
+    html, body, *{
+      -webkit-user-select: none !important;
+      user-select: none !important;
+      -webkit-touch-callout: none !important;
+    }
+    ::selection{ background: transparent; }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -55,8 +64,8 @@
       font-family:"Cairo", system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
       color:var(--text);
       background:
-        radial-gradient(1200px 700px at 30% -10%, rgba(124,77,255,.22), transparent 58%),
-        radial-gradient(1000px 650px at 90% 5%, rgba(255,77,141,.16), transparent 62%),
+        radial-gradient(1200px 700px at 30% -10%, rgba(124,77,255,.18), transparent 58%),
+        radial-gradient(1000px 650px at 90% 5%, rgba(255,77,141,.14), transparent 62%),
         radial-gradient(900px 600px at 20% 110%, rgba(255,219,77,.10), transparent 60%),
         var(--bg);
       overflow-x:hidden;
@@ -199,9 +208,9 @@
       position:absolute;
       inset:-160px;
       background:
-        radial-gradient(circle at 30% 30%, rgba(124,77,255,.38), transparent 55%),
-        radial-gradient(circle at 75% 20%, rgba(255,77,141,.25), transparent 55%),
-        radial-gradient(circle at 55% 70%, rgba(255,219,77,.18), transparent 60%);
+        radial-gradient(circle at 30% 30%, rgba(124,77,255,.28), transparent 55%),
+        radial-gradient(circle at 75% 20%, rgba(255,77,141,.22), transparent 55%),
+        radial-gradient(circle at 55% 70%, rgba(255,219,77,.16), transparent 60%);
       filter: blur(22px);
       opacity:.95;
       pointer-events:none;
@@ -297,23 +306,28 @@
       gap:14px;
       margin-top:10px;
     }
+
+    /* ✅ كروت بدون بنفسجي */
     .card{
       border:1px solid var(--border);
-      background: linear-gradient(180deg, var(--glass), var(--glass2));
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow:hidden;
       position:relative;
+    }
+    [data-theme="light"] .card{
+      background: linear-gradient(180deg, rgba(10,18,32,.05), rgba(10,18,32,.03));
     }
     .card::before{
       content:"";
       position:absolute;
       inset:-1px;
       background:
-        radial-gradient(700px 260px at 10% 0%, rgba(124,77,255,.12), transparent 60%),
-        radial-gradient(700px 260px at 95% 10%, rgba(255,77,141,.10), transparent 60%);
+        radial-gradient(700px 260px at 10% 0%, rgba(255,255,255,.08), transparent 60%),
+        radial-gradient(700px 260px at 95% 10%, rgba(255,255,255,.06), transparent 60%);
       pointer-events:none;
-      opacity:.95;
+      opacity:.9;
     }
 
     .cardBody{
@@ -328,35 +342,57 @@
     .headRow{
       display:flex;
       justify-content:space-between;
-      align-items:center;
+      align-items:flex-start;
       gap:10px;
     }
 
     .app{ display:flex; align-items:center; gap:10px; min-width:0; }
 
-    /* icon – guaranteed visible + fallback */
+    /* icons always visible */
     .appIcon{
       width:46px;height:46px;
       border-radius:16px;
       border:1px solid var(--border);
-      background: linear-gradient(135deg, rgba(124,77,255,.35), rgba(255,77,141,.25));
+      background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
       display:grid; place-items:center;
       overflow:hidden;
       flex:0 0 auto;
       box-shadow: 0 14px 40px rgba(0,0,0,.18);
     }
+    [data-theme="light"] .appIcon{
+      background: linear-gradient(135deg, rgba(10,18,32,.06), rgba(10,18,32,.03));
+    }
     .appIcon img{ width:28px;height:28px; display:block; filter: drop-shadow(0 10px 18px rgba(0,0,0,.22)); }
     .appIcon .fallback{ display:none; font-weight:900; font-size:14px; color:var(--text); letter-spacing:.6px; }
 
     .names{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+
+    /* ✅ حل (...) — نخلي العنوان يلتف سطرين */
     .names .en{
       font-weight:900;
       font-size:17px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      line-height:1.25;
       direction:ltr;
       text-align:right;
+
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
-    .names .ar{ color:var(--muted); font-size:12.5px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .names .en span{ white-space: nowrap; }
+
+    .names .ar{
+      color:var(--muted);
+      font-size:12.5px;
+      font-weight:800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
 
     .price{
       font-weight:900;
@@ -405,7 +441,6 @@
       font-size:13px;
     }
     .btn:hover{filter:brightness(1.06); transform: translateY(-1px)}
-    /* لون نص مختلف عند الضغط */
     .btn:active{ transform: translateY(0px); color: var(--p3); }
 
     .btnSmall{ padding:10px 12px; font-size:12px; font-weight:900; }
@@ -446,7 +481,6 @@
     }
     .modalBody{ padding:16px; color:var(--muted); line-height:2; font-size:14px; }
     .modalBody .lead{ color:var(--text); font-weight:900; font-size:15px; margin-bottom:10px; }
-    [data-theme="light"] .modalBody .lead{ color: var(--text); }
 
     .modalActions{
       padding:14px 16px;
@@ -519,27 +553,27 @@
   <div class="layer">
     <div class="topbar">
       <div class="container topbar__inner">
-        <div class="chip ripple" id="quickChip">طلب سريع ✨</div>
+        <div class="chip" id="quickChip">طلب سريع ✨</div>
 
         <div class="topActions">
-          <select class="select ripple" id="langSelect" aria-label="Language">
+          <select class="select" id="langSelect" aria-label="Language">
             <option value="ar">🇮🇶 العربية</option>
             <option value="en">English</option>
           </select>
 
-          <button class="toggle ripple" id="themeToggle" type="button" aria-label="Theme">
+          <button class="toggle" id="themeToggle" type="button" aria-label="Theme">
             <span class="dot"></span>
             <span id="themeText">ليلي</span>
           </button>
 
-          <a class="iconBtn ripple" id="waTop" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <a class="iconBtn" id="waTop" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M20.6 3.4A11 11 0 0 0 2.9 16.2L2 22l5.9-.8A11 11 0 0 0 20.6 3.4Z" stroke="currentColor" stroke-width="1.4"/>
               <path d="M8.6 7.9c-.3-.7-.6-.7-.9-.7h-.7c-.2 0-.6.1-.9.5-.3.4-1.2 1.2-1.2 3 0 1.7 1.3 3.4 1.4 3.6.2.2 2.5 4 6.2 5.4 3 .9 3.7.7 4.3.6.7-.1 2-1 2.3-1.9.3-.9.3-1.6.2-1.8-.1-.2-.3-.3-.7-.5l-2.3-1.1c-.2-.1-.5-.2-.8.2-.3.4-1 1.1-1.2 1.3-.2.2-.4.3-.8.1-.4-.2-1.8-.7-3.4-2.1-1.3-1.1-2.1-2.5-2.4-2.9-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.2-.7-.1-.2-.7-2-.9-2.4Z" fill="currentColor"/>
             </svg>
           </a>
 
-          <a class="iconBtn ripple" id="igTop" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener" aria-label="Instagram">
+          <a class="iconBtn" id="igTop" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9A4.7 4.7 0 0 1 2.8 16.5v-9A4.7 4.7 0 0 1 7.5 2.8Z" stroke="currentColor" stroke-width="1.4"/>
               <path d="M12 8.2A3.8 3.8 0 1 0 12 15.8 3.8 3.8 0 0 0 12 8.2Z" stroke="currentColor" stroke-width="1.4"/>
@@ -589,7 +623,7 @@
 
       <footer class="footer">
         <div id="footerText">يمكنك الطلب عبر انستغرام:</div>
-        <a class="badge ripple" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener">
+        <a class="badge" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener">
           <span class="dot"></span>
           <span id="igHandle">l11nl</span>
         </a>
@@ -599,11 +633,11 @@
 
     <!-- Modal -->
     <div class="modal" id="modal" aria-hidden="true">
-      <div class="modalBack ripple" id="modalBack"></div>
+      <div class="modalBack" id="modalBack"></div>
       <div class="modalCard">
         <div class="modalHead">
           <div class="modalTitle" id="modalTitle">—</div>
-          <button class="iconBtn ripple" id="modalClose" aria-label="Close">
+          <button class="iconBtn" id="modalClose" aria-label="Close">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -611,16 +645,16 @@
         </div>
         <div class="modalBody" id="modalBody"></div>
         <div class="modalActions">
-          <button class="btn btnSmall ripple" id="modalMore">عرض المزيد</button>
-          <button class="btn btnSmall ripple" id="modalLess" style="display:none">إخفاء</button>
-          <a class="btn btnWA ripple" id="modalOrder" href="#" target="_blank" rel="noopener">اطلب الآن</a>
+          <button class="btn btnSmall" id="modalMore">عرض المزيد</button>
+          <button class="btn btnSmall" id="modalLess" style="display:none">إخفاء</button>
+          <a class="btn btnWA" id="modalOrder" href="#" target="_blank" rel="noopener">اطلب الآن</a>
         </div>
       </div>
     </div>
 
     <!-- Music -->
     <audio id="bgm" src="winter.mp3" loop preload="none"></audio>
-    <button class="musicBtn ripple" id="musicBtn" aria-label="Music">
+    <button class="musicBtn" id="musicBtn" aria-label="Music">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M10 5v12.2A2.8 2.8 0 1 1 8.6 15V7l10-2v9.2A2.8 2.8 0 1 1 16.6 12V5l-6 1Z"
               stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -629,12 +663,12 @@
   </div>
 
   <script>
-    // ====== ثابتات ======
+    // ========= Settings =========
     const WHATSAPP_NUMBER = "9647868844984";
     const INSTAGRAM_URL = "https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3";
     const CONTACT_MSG = "السلام عليكم اجيتك من موقع NAS\nاريد اشترك يمكم";
 
-    // سعر صرف تقريبي (غيره إذا تحب)
+    // سعر صرف تقريبي
     const IQD_PER_USD = 1500;
 
     function waLink(text){
@@ -644,7 +678,7 @@
     document.getElementById("waTop").href = waLink(CONTACT_MSG);
     document.getElementById("igTop").href = INSTAGRAM_URL;
 
-    // ====== ايقونات (انترنت) + fallback ======
+    // ========= Icons (internet) + fallback =========
     function iconUrl(key){
       const theme = document.documentElement.getAttribute("data-theme") || "dark";
       const isLight = theme === "light";
@@ -657,11 +691,9 @@
       return map[key] || (isLight ? "https://cdn.simpleicons.org/appstore/111827" : "https://cdn.simpleicons.org/appstore/ffffff");
     }
 
-    // ====== بيانات المنتجات (بدون كلمة "فقط") ======
+    // ========= Products =========
     const products = [
-      {
-        id:"chatgpt_month", icon:"chatgpt",
-        en:"ChatGPT", ar:"تشات جي بي تي", plan:"Monthly", iqd:15000,
+      { id:"chatgpt_month", icon:"chatgpt", en:"ChatGPT", ar:"تشات جي بي تي", plan:"Monthly", iqd:15000,
         how_ar:"التفعيل عبر ايميلك — ترسل الايميل واحنا نفعلك. التفعيل فوري.",
         how_en:"Activation via your email — send your email and we activate it. Instant activation.",
         short_ar:"مساعد ذكي يساعدك بالكتابة والترجمة والتلخيص وأفكار الدراسة والعمل.",
@@ -669,9 +701,7 @@
         full_ar:"يساعدك بكتابة محتوى ورسائل، تلخيص ملفات، ترجمة، أفكار للمشاريع والدراسة، وتنظيم العمل بسرعة. التفعيل يتم على ايميلك.",
         full_en:"Helps you write content, summarize files, translate, generate ideas, and boost productivity. Activated on your email."
       },
-      {
-        id:"capcut_month", icon:"capcut",
-        en:"CapCut Pro", ar:"كاب كات برو", plan:"Monthly", iqd:10000,
+      { id:"capcut_month", icon:"capcut", en:"CapCut Pro", ar:"كاب كات برو", plan:"Monthly", iqd:10000,
         how_ar:"حساب جاهز شهري — يتم إرسال بيانات الحساب بعد الترتيب.",
         how_en:"Ready monthly account — login details after confirmation.",
         short_ar:"مونتاج سريع: قوالب، مؤثرات، نصوص متحركة وفلاتر جميلة.",
@@ -679,9 +709,7 @@
         full_ar:"مناسب لصناع المحتوى: انتقالات، تأثيرات، قوالب جاهزة، ونصوص متحركة تساعدك تطلع فيديو احترافي بسرعة.",
         full_en:"Great for creators: transitions, effects, templates, and animated text to make pro videos quickly."
       },
-      {
-        id:"canva_month", icon:"canva",
-        en:"Canva Pro", ar:"كانفا برو", plan:"Monthly", iqd:5000,
+      { id:"canva_month", icon:"canva", en:"Canva Pro", ar:"كانفا برو", plan:"Monthly", iqd:5000,
         how_ar:"اشتراك برو — للتصميمات والبوستات والعروض. التفعيل حسب تفاصيل الطلب.",
         how_en:"Pro plan — designs, posts & presentations. Activation based on order details.",
         short_ar:"تصميم بسهولة: بوستات، ستوريات، شعارات، وعروض بقوالب جاهزة.",
@@ -689,9 +717,7 @@
         full_ar:"منصة تصميم للهاتف والكمبيوتر. تسوي بوستات وستوري وإعلانات وشعارات بسرعة. Pro يفتح لك مكتبة أكبر من القوالب والعناصر.",
         full_en:"Design platform for mobile/desktop. Create posts, stories, ads, logos fast. Pro unlocks more templates and assets."
       },
-      {
-        id:"todtv_month", icon:"todtv",
-        en:"TOD TV", ar:"تود تي ڤي", plan:"Monthly", iqd:15000,
+      { id:"todtv_month", icon:"todtv", en:"TOD TV", ar:"تود تي ڤي", plan:"Monthly", iqd:15000,
         how_ar:"اشتراك شخصي شهري — تقدر تضيف 5 أجهزة (كمبيوتر/شاشة/موبايل).",
         how_en:"Personal monthly subscription — add up to 5 devices (PC/TV/Mobile).",
         short_ar:"مشاهدة مريحة على أكثر من جهاز مع ترتيب دخول واضح.",
@@ -699,9 +725,7 @@
         full_ar:"الاشتراك الشخصي يدعم إضافة حتى 5 أجهزة. يتم ترتيب الدخول حسب تفاصيل الطلب.",
         full_en:"Personal plan supports up to 5 devices. Access setup depends on your order details."
       },
-      {
-        id:"chatgpt_go_year", icon:"chatgpt",
-        en:"ChatGPT Go", ar:"جات جي بي تي Go", plan:"Yearly", iqd:40000,
+      { id:"chatgpt_go_year", icon:"chatgpt", en:"ChatGPT Go", ar:"جات جي بي تي Go", plan:"Yearly", iqd:40000,
         how_ar:"اشتراك سنوي — يتم ترتيب التفعيل حسب تفاصيل الطلب.",
         how_en:"Yearly subscription — activation based on order details.",
         short_ar:"خيار سنوي للاستخدام الطويل بسعر مناسب.",
@@ -709,9 +733,7 @@
         full_ar:"اشتراك سنوي للاستخدام المستمر: كتابة، تلخيص، ترجمة، أفكار محتوى، وتنظيم عمل ودراسة.",
         full_en:"Yearly plan for writing, summarizing, translating, content ideas, and productivity."
       },
-      {
-        id:"chatgpt_plus_year", icon:"chatgpt",
-        en:"ChatGPT Plus", ar:"جات جي بي تي بلس", plan:"Yearly", iqd:80000,
+      { id:"chatgpt_plus_year", icon:"chatgpt", en:"ChatGPT Plus", ar:"جات جي بي تي بلس", plan:"Yearly", iqd:80000,
         how_ar:"اشتراك سنوي بلس — يتم ترتيب التفعيل حسب تفاصيل الطلب.",
         how_en:"Yearly Plus — activation based on order details.",
         short_ar:"مناسب للاستخدام اليومي لمن يريد تجربة أقوى وأكثر سلاسة.",
@@ -721,7 +743,7 @@
       }
     ];
 
-    // ====== لغة + واجهة ======
+    // ========= Language UI =========
     let currentLang = localStorage.getItem("nas_lang") || "ar";
 
     const UI = {
@@ -759,7 +781,6 @@
       }
     };
 
-    // عناصر UI
     const langSelect = document.getElementById("langSelect");
     const quickChip = document.getElementById("quickChip");
     const heroSubtitle = document.getElementById("heroSubtitle");
@@ -770,7 +791,7 @@
     const footerText = document.getElementById("footerText");
     const themeText = document.getElementById("themeText");
 
-    // ====== ثيم ======
+    // ========= Theme =========
     const themeToggle = document.getElementById("themeToggle");
     const savedTheme = localStorage.getItem("nas_theme") || "dark";
     document.documentElement.setAttribute("data-theme", savedTheme);
@@ -779,19 +800,20 @@
       const t = document.documentElement.getAttribute("data-theme") || "dark";
       themeText.textContent = (t === "dark") ? UI[currentLang].themeDark : UI[currentLang].themeLight;
     }
+
     themeToggle.addEventListener("click", () => {
       const now = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", now);
       localStorage.setItem("nas_theme", now);
       updateThemeText();
-      renderProducts(); // لتحديث لون الايقونات
+      renderProducts();
     });
 
-    // ====== اسعار ======
+    // ========= Prices =========
     function fmtIQD(n){ return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
     function iqdToUsd(iqd){
       const usd = iqd / IQD_PER_USD;
-      return Math.round(usd * 2) / 2; // نصف دولار
+      return Math.round(usd * 2) / 2;
     }
     function priceHTML(iqd){
       if(currentLang === "en"){
@@ -801,7 +823,7 @@
       return `${fmtIQD(iqd)} د.ع`;
     }
 
-    // ====== رسالة الواتساب للطلب ======
+    // ========= WhatsApp message =========
     function waMessage(appName, plan){
       const planTxt = UI[currentLang].planLabel(plan);
       if(currentLang === "ar"){
@@ -810,7 +832,7 @@
       return `Hello, can I subscribe to (${appName}) ${planTxt}?\n\nI came from NAS website.\nI want to subscribe.`;
     }
 
-    // ====== رندر المنتجات ======
+    // ========= Render products =========
     const grid = document.getElementById("grid");
 
     function escapeHtml(s){
@@ -824,10 +846,11 @@
 
     function card(p){
       const isAr = currentLang === "ar";
-      const planLabel = UI[currentLang].planLabel(p.plan); // بالعربي عند العربية، وبالانجليزي عند الانجليزي
+      const planLabel = UI[currentLang].planLabel(p.plan);
       const how = isAr ? p.how_ar : p.how_en;
       const infoBtnText = UI[currentLang].meaning(p.en);
       const orderText = UI[currentLang].order;
+
       const msg = waMessage(p.en, p.plan);
 
       return `
@@ -841,7 +864,6 @@
                   <div class="fallback">${escapeHtml(p.en.slice(0,2).toUpperCase())}</div>
                 </div>
                 <div class="names">
-                  <!-- بالواجهة العربية: Canva Pro (شهري)  ✅ -->
                   <div class="en">${escapeHtml(p.en)} <span style="opacity:.78;font-weight:900;">(${escapeHtml(planLabel)})</span></div>
                   <div class="ar">${escapeHtml(p.ar)}</div>
                 </div>
@@ -865,7 +887,7 @@
       grid.innerHTML = products.map(card).join("");
     }
 
-    // ====== مودال التفاصيل ======
+    // ========= Modal =========
     const modal = document.getElementById("modal");
     const modalBack = document.getElementById("modalBack");
     const modalClose = document.getElementById("modalClose");
@@ -930,7 +952,7 @@
       if(p) openModal(p);
     });
 
-    // ====== ripple + رجاج ======
+    // ========= Ripple + Haptic =========
     function addRipple(el, x, y){
       const rect = el.getBoundingClientRect();
       const span = document.createElement("span");
@@ -951,7 +973,7 @@
       vibrate();
     });
 
-    // ====== الثلج ======
+    // ========= Snow =========
     const canvas = document.getElementById("winter");
     const ctx = canvas.getContext("2d", { alpha: true });
     let W=0,H=0, drops=[];
@@ -978,7 +1000,6 @@
         d.x += d.drift;
         if(d.y - d.r > H) drops[i] = makeDrop(false);
         if(d.x < -50 || d.x > W+50) drops[i] = makeDrop(false);
-
         ctx.beginPath();
         ctx.fillStyle = `rgba(255,255,255,${d.a})`;
         ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
@@ -988,7 +1009,7 @@
     }
     window.addEventListener("resize", resize);
 
-    // ====== موسيقى ======
+    // ========= Music =========
     const bgm = document.getElementById("bgm");
     const musicBtn = document.getElementById("musicBtn");
     let playing = false;
@@ -1001,14 +1022,14 @@
       }
     });
 
-    // ====== تطبيق اللغة ======
+    // ========= Language apply =========
     function applyLang(lang){
       currentLang = lang;
       localStorage.setItem("nas_lang", lang);
 
       const isAr = lang === "ar";
       document.documentElement.lang = isAr ? "ar" : "en";
-      document.documentElement.dir = isAr ? "rtl" : "ltr";
+      document.documentElement.dir  = isAr ? "rtl" : "ltr";
 
       quickChip.textContent = UI[lang].quick;
       heroSubtitle.innerHTML = UI[lang].hero;
@@ -1018,11 +1039,15 @@
       productsHint.textContent = UI[lang].hint;
       footerText.textContent = UI[lang].footer;
 
+      modalMore.textContent = UI[lang].more;
+      modalLess.textContent = UI[lang].less;
+      modalOrder.textContent = UI[lang].order;
+
       updateThemeText();
       renderProducts();
     }
 
-    // ====== init ======
+    // init
     langSelect.value = currentLang;
     langSelect.addEventListener("change", () => applyLang(langSelect.value));
 
