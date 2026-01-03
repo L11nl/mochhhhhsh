@@ -4,19 +4,22 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NAS</title>
-  <meta name="description" content="NAS - اشتراكات وخدمات رقمية (طلب عبر واتساب/انستغرام)" />
+  <meta name="description" content="NAS - خدمات واشتراكات رقمية | طلب عبر واتساب وانستغرام" />
 
   <style>
-    :root{
-      --bg:#070B14;
-      --panel: rgba(255,255,255,.06);
-      --panel2: rgba(255,255,255,.04);
-      --border: rgba(255,255,255,.12);
-      --text:#F3F6FF;
-      --muted:#AEBBDD;
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
 
-      --radius:22px;
-      --shadow: 0 18px 60px rgba(0,0,0,.45);
+    :root{
+      --bg:#060A12;
+      --text:#F2F6FF;
+      --muted:#AAB8DA;
+
+      --glass: rgba(255,255,255,.06);
+      --glass2: rgba(255,255,255,.035);
+      --border: rgba(255,255,255,.12);
+
+      --radius:24px;
+      --shadow: 0 24px 80px rgba(0,0,0,.55);
 
       --g1:#7C4DFF;
       --g2:#00E5FF;
@@ -24,138 +27,168 @@
       --g4:#FF4D8D;
 
       --wa:#25D366;
+
+      --btn: rgba(255,255,255,.07);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
-      color:var(--text);
+      font-family: "Cairo", system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
       background:
-        radial-gradient(1200px 700px at 30% -10%, rgba(124,77,255,.25), transparent 55%),
-        radial-gradient(1000px 650px at 90% 5%, rgba(0,229,255,.16), transparent 60%),
-        radial-gradient(900px 600px at 15% 100%, rgba(0,255,133,.12), transparent 55%),
+        radial-gradient(1200px 700px at 30% -10%, rgba(124,77,255,.20), transparent 55%),
+        radial-gradient(1000px 650px at 90% 5%, rgba(0,229,255,.14), transparent 60%),
+        radial-gradient(900px 600px at 15% 110%, rgba(0,255,133,.10), transparent 55%),
         var(--bg);
+      color:var(--text);
       overflow-x:hidden;
     }
-
     a{color:inherit}
-    .container{max-width:1150px;margin:0 auto;padding:22px}
+    .container{max-width:1160px;margin:0 auto;padding:22px}
 
-    /* ========= Top bar ========= */
+    /* خلفية الشتاء */
+    #winter {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .55;
+    }
+
+    .layer{ position:relative; z-index:2; }
+
     .topbar{
-      position:sticky; top:0; z-index:50;
-      background: rgba(7,11,20,.55);
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: rgba(6,10,18,.55);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
     .topbar__inner{
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
     }
     .chip{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 12px;
-      border-radius: 999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.06);
-      box-shadow: 0 10px 40px rgba(0,0,0,.25);
-      font-size:13px;
-      color:var(--muted);
-      white-space:nowrap;
-    }
-    .chip strong{color:var(--text)}
-    .btn{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-      padding:10px 14px;
-      border-radius: 14px;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .15s ease, filter .15s ease, background .15s ease;
-      text-decoration:none;
       display:inline-flex;
       align-items:center;
-      gap:8px;
-      justify-content:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: var(--glass);
+      box-shadow: 0 12px 45px rgba(0,0,0,.25);
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
     }
-    .btn:hover{filter:brightness(1.08); transform: translateY(-1px)}
-    .btn:active{transform: translateY(0px)}
-    .btn--wa{
-      border-color: rgba(37,211,102,.35);
-      background: rgba(37,211,102,.12);
+    .chip b{color:var(--text); font-weight:900}
+
+    .iconBtn{
+      width:44px;height:44px;
+      display:inline-grid;
+      place-items:center;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background: var(--btn);
+      cursor:pointer;
+      transition: transform .14s ease, filter .14s ease;
+      text-decoration:none;
+      position:relative;
+      overflow:hidden;
     }
-    .btn--ghost{
-      background: transparent;
+    .iconBtn:hover{filter:brightness(1.08); transform: translateY(-1px)}
+    .iconBtn:active{transform: translateY(0px)}
+    .iconBtn svg{width:22px;height:22px}
+
+    /* ripple */
+    .rippleSpan{
+      position:absolute;
+      border-radius: 999px;
+      transform: scale(0);
+      animation: ripple .55s ease-out;
+      background: rgba(255,255,255,.25);
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+    @keyframes ripple{
+      to{ transform: scale(4); opacity: 0; }
     }
 
-    /* ========= Hero ========= */
-    .hero{
-      padding: 26px 0 8px;
-      position:relative;
-    }
+    .hero{ padding: 22px 0 10px; }
     .heroGrid{
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
+      grid-template-columns: 1.25fr .75fr;
       gap:16px;
       align-items:stretch;
     }
 
-    .nas3dWrap{
-      padding: 24px;
+    .heroCard{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, var(--glass), var(--glass2));
       border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       box-shadow: var(--shadow);
-      position:relative;
       overflow:hidden;
+      position:relative;
     }
-    /* moving glow */
-    .nas3dWrap::before{
+    .heroCard::before{
       content:"";
       position:absolute;
       inset:-140px;
       background: conic-gradient(from 120deg,
-        rgba(124,77,255,.45),
-        rgba(0,229,255,.35),
-        rgba(0,255,133,.30),
-        rgba(255,77,141,.35),
-        rgba(124,77,255,.45)
+        rgba(124,77,255,.40),
+        rgba(0,229,255,.30),
+        rgba(0,255,133,.26),
+        rgba(255,77,141,.30),
+        rgba(124,77,255,.40)
       );
-      filter: blur(40px);
-      opacity:.45;
+      filter: blur(45px);
+      opacity:.42;
       animation: spin 7s linear infinite;
+      pointer-events:none;
     }
-    @keyframes spin{
-      to{ transform: rotate(360deg); }
-    }
+    @keyframes spin { to{ transform: rotate(360deg); } }
 
-    .nasTitle{
+    .heroInner{
       position:relative;
+      padding: 20px;
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:12px;
     }
 
-    /* 3D animated NAS */
-    .nasWord{
-      font-size: 64px;
-      line-height:1;
-      letter-spacing: 2px;
+    .nasWrap{ perspective: 900px; display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; }
+
+    .nas3d{
+      position:relative;
       font-weight: 900;
-      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 64px;
+      line-height: 1;
       transform-style: preserve-3d;
-      text-shadow:
-        0 1px 0 rgba(255,255,255,.12),
-        0 10px 40px rgba(0,0,0,.45);
-      background: linear-gradient(90deg, var(--g1), var(--g2), var(--g3), var(--g4), var(--g1));
-      background-size: 400% 100%;
+      transform: rotateX(10deg) rotateY(-12deg);
+      animation: floaty 3.2s ease-in-out infinite;
+      user-select:none;
+      width: max-content;
+    }
+    @keyframes floaty{
+      0%,100%{ transform: rotateX(10deg) rotateY(-12deg) translateY(0px); }
+      50%{ transform: rotateX(14deg) rotateY(-6deg) translateY(-6px); }
+    }
+
+    .nas3d .front{
+      background: linear-gradient(90deg, var(--g1), var(--g2), var(--g3), #FFDB4D, var(--g4), var(--g1));
+      background-size: 420% 100%;
       -webkit-background-clip: text;
       background-clip:text;
       color: transparent;
       animation: hue 6s ease-in-out infinite;
-      filter: drop-shadow(0 18px 35px rgba(0,0,0,.35));
+      filter: drop-shadow(0 18px 35px rgba(0,0,0,.45));
+      position:relative;
+      z-index:3;
     }
     @keyframes hue{
       0%{ background-position: 0% 50%; }
@@ -163,78 +196,55 @@
       100%{ background-position: 0% 50%; }
     }
 
-    .nasWord3d{
-      position:relative;
-      width:max-content;
-      animation: floaty 3.2s ease-in-out infinite;
-      transform-origin:center;
-    }
-    @keyframes floaty{
-      0%,100%{ transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-      50%{ transform: translateY(-6px) rotateX(6deg) rotateY(-6deg); }
-    }
-
-    /* faux 3D layers */
-    .nasWord3d::after{
-      content:"NAS";
+    .nas3d .layer1,
+    .nas3d .layer2,
+    .nas3d .layer3{
       position:absolute;
       inset:0;
-      transform: translate(6px, 10px);
-      color: rgba(0,0,0,.45);
-      filter: blur(.2px);
-      z-index:-1;
+      color: rgba(0,0,0,.35);
+      z-index:1;
+      transform: translateZ(-1px);
     }
-    .nasWord3d::before{
-      content:"NAS";
-      position:absolute;
-      inset:0;
-      transform: translate(12px, 20px);
-      color: rgba(0,0,0,.28);
-      filter: blur(1px);
-      z-index:-2;
-    }
+    .nas3d .layer1{ transform: translate3d(6px, 10px, -12px); opacity:.60; filter: blur(.2px); }
+    .nas3d .layer2{ transform: translate3d(12px, 20px, -26px); opacity:.45; filter: blur(.6px); }
+    .nas3d .layer3{ transform: translate3d(18px, 30px, -40px); opacity:.30; filter: blur(1.1px); }
 
-    .heroText{
-      position:relative;
+    .subtitle{
       color:var(--muted);
-      font-size:15px;
-      line-height:1.85;
-      max-width: 56ch;
+      font-size: 15px;
+      line-height: 1.9;
+      max-width: 62ch;
     }
-    .heroBadges{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
+
     .hrGlow{
       height:1px;
-      margin: 18px 0 0;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
       border:0;
+      margin: 6px 0 0;
       opacity:.9;
     }
 
-    .sideCard{
-      padding: 18px;
+    .side{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, var(--glass), var(--glass2));
       border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.04);
       box-shadow: var(--shadow);
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
     }
-    .sideCard h3{margin:0 0 10px}
-    .sideCard p{margin:0;color:var(--muted);line-height:1.9}
+    .side h3{margin:0 0 8px; font-size:18px}
+    .side p{margin:0; color:var(--muted); line-height:1.95}
 
-    /* ========= Products ========= */
     .sectionTitle{
       display:flex;
       align-items:baseline;
       justify-content:space-between;
       gap:12px;
-      margin: 20px 0 10px;
+      margin: 18px 0 10px;
     }
-    .sectionTitle h2{margin:0;font-size:22px}
-    .sectionTitle .muted{color:var(--muted);font-size:13px}
+    .sectionTitle h2{margin:0; font-size:22px}
+    .sectionTitle .muted{color:var(--muted); font-size:13px}
 
     .grid{
       display:grid;
@@ -245,378 +255,635 @@
 
     .card{
       border:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      background: linear-gradient(180deg, var(--glass), var(--glass2));
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow:hidden;
       position:relative;
-      transform: translateZ(0);
     }
     .card::before{
       content:"";
       position:absolute;
       inset:-1px;
-      background: radial-gradient(700px 260px at 20% 0%, rgba(124,77,255,.20), transparent 60%),
-                  radial-gradient(700px 260px at 90% 10%, rgba(0,229,255,.16), transparent 55%);
+      background:
+        radial-gradient(700px 260px at 10% 0%, rgba(124,77,255,.20), transparent 60%),
+        radial-gradient(700px 260px at 95% 10%, rgba(0,229,255,.15), transparent 60%);
       pointer-events:none;
-      opacity:.9;
+      opacity:.95;
     }
+
     .cardBody{
       position:relative;
       padding: 16px;
       display:flex;
       flex-direction:column;
-      gap:10px;
-      min-height: 260px;
+      gap:12px;
+      min-height: 290px;
     }
 
-    .tagRow{
-      display:flex; justify-content:space-between; gap:10px; align-items:center;
+    .headRow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
     }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
+
+    .app{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 0;
+    }
+    .appIcon{
+      width:44px;height:44px;
+      border-radius: 16px;
       border:1px solid var(--border);
       background: rgba(255,255,255,.06);
-      color:var(--muted);
-      font-size:12px;
-      width:fit-content;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      flex:0 0 auto;
     }
-    .pill b{color:var(--text);font-weight:800}
-    .price{
-      font-weight: 900;
-      font-size:16px;
-      letter-spacing:.2px;
+    .appIcon img{
+      width:26px;height:26px;
+      display:block;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
     }
 
-    .title{
+    .names{
       display:flex;
       flex-direction:column;
-      gap:4px;
+      gap:2px;
+      min-width: 0;
     }
-    .title .ar{
+    .names .ar{
       font-weight: 900;
-      font-size: 18px;
-      letter-spacing:.2px;
+      font-size: 17px;
+      line-height:1.2;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .title .en{
+    .names .en{
       color:var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing:.3px;
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      direction:ltr;
+      text-align:right;
+    }
+
+    .price{
+      font-weight: 900;
+      font-size: 15px;
+      white-space:nowrap;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      padding:6px 10px;
+      border-radius: 999px;
     }
 
     .desc{
-      color:var(--muted);
-      line-height:1.9;
+      color: var(--muted);
+      line-height: 1.95;
       font-size: 13px;
-      margin-top: 4px;
-      flex: 1;
+      flex:1;
     }
 
-    .miniBtn{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-      padding:8px 10px;
-      border-radius: 12px;
-      cursor:pointer;
-      font-size:12px;
-      width:fit-content;
-      transition: filter .15s ease, transform .15s ease;
-    }
-    .miniBtn:hover{filter:brightness(1.08); transform: translateY(-1px)}
-    .miniBtn:active{transform: translateY(0px)}
-
-    .actionsRow{
+    .ctaRow{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       align-items:center;
-      margin-top: 6px;
+      margin-top: 2px;
     }
 
-    .btnOrder{
-      flex:1;
-      min-width: 160px;
-      border-color: rgba(37,211,102,.38);
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.07);
+      color:var(--text);
+      padding: 11px 14px;
+      border-radius: 16px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .14s ease, filter .14s ease;
+      position:relative;
+      overflow:hidden;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .btn:hover{filter:brightness(1.08); transform: translateY(-1px)}
+    .btn:active{transform: translateY(0px)}
+
+    .btnSmall{
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      background: rgba(255,255,255,.06);
+    }
+
+    .btnWA{
+      flex: 1;
+      min-width: 170px;
+      border-color: rgba(37,211,102,.40);
       background: rgba(37,211,102,.12);
     }
 
-    .details{
+    /* Modal */
+    .modal{
+      position:fixed;
+      inset:0;
       display:none;
-      margin-top: 6px;
-      padding: 12px 12px;
-      border-radius: 16px;
-      border:1px dashed rgba(255,255,255,.18);
-      background: rgba(255,255,255,.03);
-      color:var(--muted);
-      line-height:1.85;
-      font-size:13px;
+      z-index: 80;
     }
-    .details strong{color:var(--text)}
+    .modal[aria-hidden="false"]{display:block}
+    .modalBack{
+      position:absolute; inset:0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(8px);
+    }
+    .modalCard{
+      position:absolute;
+      inset-inline: 14px;
+      top: 10vh;
+      max-width: 720px;
+      margin: 0 auto;
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(14,18,30,.92), rgba(10,12,20,.92));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .modalHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .modalTitle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+      font-weight: 900;
+      font-size: 16px;
+    }
+    .modalTitle span{
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .modalBody{
+      padding: 16px;
+      color: var(--muted);
+      line-height: 2;
+      font-size: 14px;
+    }
+    .modalBody .lead{
+      color: var(--text);
+      font-weight: 900;
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+    .modalActions{
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-    /* ========= Footer ========= */
+    .musicBtn{
+      position: fixed;
+      bottom: 16px;
+      inset-inline-end: 16px;
+      z-index: 90;
+      width:56px;height:56px;
+      border-radius: 18px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.08);
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      overflow:hidden;
+    }
+    .musicBtn svg{width:26px;height:26px}
+
     .footer{
       margin-top: 26px;
       border-top: 1px solid var(--border);
-      padding: 18px 0 30px;
+      padding: 18px 0 34px;
       color: var(--muted);
       text-align:center;
-      line-height:1.9;
+      line-height: 2;
       font-size: 13px;
     }
 
-    /* ========= Responsive ========= */
     @media (max-width: 980px){
       .heroGrid{grid-template-columns:1fr}
-      .nasWord{font-size:56px}
+      .nas3d{font-size:56px}
       .grid{grid-template-columns: repeat(2, 1fr)}
     }
     @media (max-width: 560px){
-      .nasWord{font-size:48px}
+      .nas3d{font-size:48px}
       .grid{grid-template-columns:1fr}
     }
   </style>
 </head>
 
 <body>
-  <div class="topbar">
-    <div class="container topbar__inner">
-      <div class="chip">متجر <strong>NAS</strong> | طلب سريع</div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <a class="btn btn--wa" id="waTop" href="#" aria-label="WhatsApp">
-          واتساب
-        </a>
-        <a class="btn btn--ghost" id="igTop" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener">
-          انستغرام
-        </a>
+  <canvas id="winter"></canvas>
+
+  <div class="layer">
+    <div class="topbar">
+      <div class="container topbar__inner">
+        <div class="chip">متجر <b>NAS</b> | طلب سريع</div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="iconBtn ripple" id="waTop" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20.6 3.4A11 11 0 0 0 2.9 16.2L2 22l5.9-.8A11 11 0 0 0 20.6 3.4Z" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/>
+              <path d="M8.6 7.9c-.3-.7-.6-.7-.9-.7h-.7c-.2 0-.6.1-.9.5-.3.4-1.2 1.2-1.2 3 0 1.7 1.3 3.4 1.4 3.6.2.2 2.5 4 6.2 5.4 3 .9 3.7.7 4.3.6.7-.1 2-1 2.3-1.9.3-.9.3-1.6.2-1.8-.1-.2-.3-.3-.7-.5l-2.3-1.1c-.2-.1-.5-.2-.8.2-.3.4-1 1.1-1.2 1.3-.2.2-.4.3-.8.1-.4-.2-1.8-.7-3.4-2.1-1.3-1.1-2.1-2.5-2.4-2.9-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.2-.7-.1-.2-.7-2-.9-2.4Z" fill="rgba(255,255,255,.85)"/>
+            </svg>
+          </a>
+
+          <a class="iconBtn ripple" id="igTop" href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9A4.7 4.7 0 0 1 2.8 16.5v-9A4.7 4.7 0 0 1 7.5 2.8Z" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/>
+              <path d="M12 8.2A3.8 3.8 0 1 0 12 15.8 3.8 3.8 0 0 0 12 8.2Z" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/>
+              <path d="M17.3 6.7h.01" stroke="rgba(255,255,255,.85)" stroke-width="2.4" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <main class="container">
-    <section class="hero">
-      <div class="heroGrid">
-        <div class="nas3dWrap">
-          <div class="nasTitle">
-            <div class="nasWord3d"><div class="nasWord">NAS</div></div>
-            <div class="heroText">
-              خدمات واشتراكات رقمية — طلب مباشر عبر واتساب أو انستغرام.<br>
-              <span class="muted">⚡ التفعيل حسب نوع الخدمة (مذكور داخل كل منتج).</span>
+    <main class="container">
+      <section class="hero">
+        <div class="heroGrid">
+          <div class="heroCard">
+            <div class="heroInner">
+              <div class="nasWrap">
+                <div class="nas3d">
+                  <div class="layer3">NAS</div>
+                  <div class="layer2">NAS</div>
+                  <div class="layer1">NAS</div>
+                  <div class="front">NAS</div>
+                </div>
+              </div>
+
+              <div class="subtitle">
+                اشتراكات وخدمات رقمية بأسلوب مرتب واحترافي.<br>
+                اضغط <b>اطلب الآن</b> وستفتح لك رسالة جاهزة على واتساب.
+              </div>
+
+              <hr class="hrGlow" />
             </div>
-            <div class="heroBadges">
-              <div class="chip">✅ أسعار واضحة</div>
-              <div class="chip">⚡ توصيل سريع</div>
-              <div class="chip">📩 تفعيل عبر ايميل/حساب</div>
-            </div>
-            <hr class="hrGlow" />
+          </div>
+
+          <div class="side">
+            <h3>طرق الطلب</h3>
+            <p>
+              1) اختر المنتج<br>
+              2) اضغط <b>اطلب الآن</b><br>
+              3) تنفتح رسالة جاهزة على واتساب<br><br>
+              يمكن الطلب أيضًا عبر انستغرام.
+            </p>
           </div>
         </div>
+      </section>
 
-        <div class="sideCard">
-          <h3>طرق الطلب</h3>
-          <p>
-            1) اختَر المنتج<br>
-            2) اضغط <b>اطلب الآن</b><br>
-            3) راح ينفتح واتساب برسالة جاهزة<br><br>
-            يمكنك أيضًا الطلب عبر انستغرام:
-            <a href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener">صفحتنا هنا</a>
-          </p>
+      <div class="sectionTitle">
+        <h2>المنتجات</h2>
+        <div class="muted">زر “ما هو؟” يفتح شرح مختصر + عرض المزيد</div>
+      </div>
+
+      <section class="grid" id="grid"></section>
+
+      <footer class="footer">
+        يمكنك الطلب عبر انستغرام:
+        <a href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener">@l11nl</a>
+        <br>
+        جميع الحقوق محفوظة لدى <b>NAS</b> ©
+      </footer>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="modal" aria-hidden="true">
+      <div class="modalBack" id="modalBack"></div>
+      <div class="modalCard">
+        <div class="modalHead">
+          <div class="modalTitle" id="modalTitle"><span>—</span></div>
+          <button class="iconBtn ripple" id="modalClose" aria-label="إغلاق">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modalBody" id="modalBody"></div>
+        <div class="modalActions">
+          <button class="btn btnSmall ripple" id="modalMore">عرض المزيد</button>
+          <button class="btn btnSmall ripple" id="modalLess" style="display:none">إخفاء التفاصيل</button>
+          <a class="btn btnWA ripple" id="modalOrder" href="#" target="_blank" rel="noopener">اطلب الآن</a>
         </div>
       </div>
-    </section>
-
-    <div class="sectionTitle">
-      <h2>المنتجات</h2>
-      <div class="muted">اضغط “ما هو؟” لعرض شرح عربي/إنجليزي</div>
     </div>
 
-    <section class="grid" id="grid"></section>
-
-    <footer class="footer">
-      يمكنك الطلب عبر انستغرام:
-      <a href="https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3" target="_blank" rel="noopener">
-        @l11nl
-      </a>
-      <br>
-      جميع الحقوق محفوظة لدى <b>NAS</b> ©
-    </footer>
-  </main>
+    <!-- Music -->
+    <audio id="bgm" src="winter.mp3" loop preload="none"></audio>
+    <button class="musicBtn ripple" id="musicBtn" aria-label="Music">
+      <svg id="musicIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M10 5v12.2A2.8 2.8 0 1 1 8.6 15V7l10-2v9.2A2.8 2.8 0 1 1 16.6 12V5l-6 1Z"
+              stroke="rgba(255,255,255,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
 
   <script>
-    // ====== إعدادات التواصل ======
-    const WHATSAPP_NUMBER = "9647868844984"; // بدون +
-    const INSTAGRAM_URL = "https://www.instagram.com/l11nl?igsh=YnF0bTU4MXAyamZ3";
+    const WHATSAPP_NUMBER = "9647868844984";
 
-    // رسالة عامة للواتساب (أعلى الصفحة)
-    const waTop = document.getElementById("waTop");
-    waTop.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("السلام عليكم، أريد الطلب من متجر NAS.")}`;
-
-    // ====== المنتجات ======
-    const products = [
-      {
-        id: "chatgpt_month",
-        arName: "تشات جي بي تي شهري",
-        enName: "ChatGPT Monthly",
-        price: "15,000 دينار عراقي",
-        deliveryAr: "عن طريق ايميلك فقط — ترسل الايميل واحنا نفعلك. التفعيل فوري.",
-        deliveryEn: "Via your email only — send your email and we activate it. Instant activation.",
-        aboutArTitle: "ما هو تشات جي بي تي؟",
-        aboutEnTitle: "What is ChatGPT?",
-        aboutAr:
-          "ChatGPT هو مساعد ذكي يعتمد على الذكاء الاصطناعي، يساعدك بالكتابة، الترجمة، تلخيص المحتوى، أفكار الدراسة والعمل، وحل مشاكل كثيرة بسرعة.",
-        aboutEn:
-          "ChatGPT is an AI assistant that helps with writing, translation, summarizing content, generating ideas for work/study, and solving many tasks quickly.",
-        waTemplate: (p) =>
-          `السلام عليكم، أريد طلب: ${p.arName}\nالسعر: ${p.price}\n\nرجاءً: هذا ايميل التفعيل: ________\nوشكراً.`
-      },
-      {
-        id: "chatgpt_go_year",
-        arName: "جات جي بي تي Go سنوي",
-        enName: "ChatGPT Go (Yearly)",
-        price: "40,000 دينار عراقي",
-        deliveryAr: "تفعيل سنوي — يتم التفعيل حسب تفاصيل الطلب.",
-        deliveryEn: "Yearly activation — activated based on order details.",
-        aboutArTitle: "ما هو ChatGPT Go؟",
-        aboutEnTitle: "What is ChatGPT Go?",
-        aboutAr:
-          "خيار سنوي مناسب لمن يريد استخدام مساعد ذكي لفترة طويلة بسعر أقل من الشهري. يتم التفعيل حسب تفاصيل الطلب.",
-        aboutEn:
-          "A yearly option for long-term use. Activation depends on your order details.",
-        waTemplate: (p) =>
-          `السلام عليكم، أريد طلب: ${p.arName}\nالسعر: ${p.price}\n\nرجاءً: هذا ايميل التفعيل: ________\nوشكراً.`
-      },
-      {
-        id: "chatgpt_plus_year",
-        arName: "جات جي بي تي سنوي بلس",
-        enName: "ChatGPT Plus (Yearly)",
-        price: "80,000 دينار عراقي",
-        deliveryAr: "تفعيل سنوي بلس — يتم التفعيل حسب تفاصيل الطلب.",
-        deliveryEn: "Yearly Plus activation — activated based on order details.",
-        aboutArTitle: "ما هو ChatGPT Plus؟",
-        aboutEnTitle: "What is ChatGPT Plus?",
-        aboutAr:
-          "ChatGPT Plus يوفر تجربة أقوى وسرعة أفضل ومزايا إضافية مقارنة بالنسخة العادية، مناسب لمن يستخدمه يوميًا للعمل أو الدراسة.",
-        aboutEn:
-          "ChatGPT Plus offers a stronger experience, better speed, and extra features compared to the standard version—great for daily work or study.",
-        waTemplate: (p) =>
-          `السلام عليكم، أريد طلب: ${p.arName}\nالسعر: ${p.price}\n\nرجاءً: هذا ايميل التفعيل: ________\nوشكراً.`
-      },
-      {
-        id: "capcut_month",
-        arName: "كاب كات برو شهري",
-        enName: "CapCut Pro Monthly",
-        price: "10,000 دينار عراقي",
-        deliveryAr: "حساب جاهز شهري — يتم إرسال بيانات الحساب بعد الاتفاق.",
-        deliveryEn: "Ready monthly account — account details sent after confirmation.",
-        aboutArTitle: "ما هو كاب كات؟",
-        aboutEnTitle: "What is CapCut?",
-        aboutAr:
-          "CapCut تطبيق مونتاج سهل وقوي للفيديو، يوفر قوالب، مؤثرات، نصوص متحركة، وفلاتر تساعدك تسوي فيديو احترافي بسرعة.",
-        aboutEn:
-          "CapCut is an easy and powerful video editor with templates, effects, animated text, and filters to create professional videos quickly.",
-        waTemplate: (p) =>
-          `السلام عليكم، أريد طلب: ${p.arName}\nالسعر: ${p.price}\n\nرجاءً: أرسلوا تفاصيل الحساب بعد التأكيد.\nوشكراً.`
-      },
-      {
-        id: "canva_month",
-        arName: "كانفا برو",
-        enName: "Canva Pro",
-        price: "5,000 دينار عراقي",
-        deliveryAr: "اشتراك برو — مناسب للتصميمات والبوسترات والعروض. التفعيل حسب تفاصيل الطلب.",
-        deliveryEn: "Pro plan — great for designs, posters, and presentations. Activation depends on order details.",
-        aboutArTitle: "ما هو كانفا؟",
-        aboutEnTitle: "What is Canva?",
-        aboutAr:
-          "Canva منصة تصميم سهلة بالهاتف والكمبيوتر، توفر قوالب جاهزة وشعارات وبوستات وعروض تقديمية، وتسهّل التصميم حتى لو مبتدئ.",
-        aboutEn:
-          "Canva is a simple design platform on mobile/desktop with ready templates for logos, posts, and presentations—great even for beginners.",
-        waTemplate: (p) =>
-          `السلام عليكم، أريد طلب: ${p.arName}\nالسعر: ${p.price}\n\nرجاءً: تفاصيل التفعيل/الإيميل: ________\nوشكراً.`
-      },
-      {
-        id: "todtv_month",
-        arName: "تود تي ڤي شهري",
-        enName: "TOD TV Monthly",
-        price: "15,000 دينار عراقي",
-        deliveryAr: "اشتراك شخصي شهري — تستطيع إضافة 5 أجهزة مثل كمبيوتر وشاشة تلفزيون وموبايل. يتم إرسال تفاصيل الدخول بعد الاتفاق.",
-        deliveryEn: "Personal monthly subscription — up to 5 devices (PC, TV, mobile). Login details sent after confirmation.",
-        aboutArTitle: "ما هو TOD TV؟",
-        aboutEnTitle: "What is TOD TV?",
-        aboutAr:
-          "TOD TV خدمة مشاهدة توفر قنوات ومحتوى ترفيهي وبث مباشر حسب الباقة. مناسبة للمشاهدة على أكثر من جهاز.",
-        aboutEn:
-          "TOD TV is a streaming service offering channels and entertainment content (depending on your plan). Suitable for multi-device viewing.",
-        waTemplate: (p) =>
-          `السلام عليكم، أريد طلب: ${p.arName}\nالسعر: ${p.price}\n\nرجاءً: أرسلوا تفاصيل الاشتراك بعد التأكيد.\nوشكراً.`
-      }
-    ];
-
-    // ====== Render ======
-    const grid = document.getElementById("grid");
-
+    // قالب الرسالة الجديد حسب طلبك (ANS كما كتبتها)
+    function waMessage(appNameAr, plan){
+      return `السلام عليكم ممكن اشتراك في تطبيق (${appNameAr}) ${plan}\n\nاني اجيتك من موقع ANS`;
+    }
     function waLink(text){
       return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
     }
 
-    function cardTemplate(p){
-      const orderText = p.waTemplate(p);
+    // روابط واتساب أعلى الصفحة
+    const helloMsg = "السلام عليكم، أريد الطلب من متجر NAS.";
+    document.getElementById("waTop").href = waLink(helloMsg);
 
+    // icons
+    const iconUrl = (key) => {
+      const map = {
+        chatgpt: "https://cdn.simpleicons.org/openai/ffffff",
+        capcut: "https://cdn.simpleicons.org/capcut/ffffff",
+        canva: "https://cdn.simpleicons.org/canva/00C4CC",
+        todtv: "https://cdn.simpleicons.org/television/ffffff"
+      };
+      return map[key] || "https://cdn.simpleicons.org/appstore/ffffff";
+    };
+
+    const products = [
+      {
+        id: "chatgpt_month",
+        icon: "chatgpt",
+        ar: "تشات جي بي تي",
+        en: "ChatGPT",
+        plan: "الشهري",
+        price: "15,000 د.ع",
+        how: "التفعيل عبر ايميلك فقط — ترسل الايميل واحنا نفعلك. التفعيل فوري.",
+        short: "مساعد ذكي يساعدك بالكتابة والترجمة والتلخيص وأفكار الدراسة والعمل.",
+        full: "ChatGPT يساعدك بكتابة المحتوى والرسائل، تلخيص مقالات وملفات، ترجمة، أفكار إبداعية للمشاريع والدراسة، وتنظيم العمل بسرعة. التفعيل يتم على ايميلك الذي ترسله.",
+      },
+      {
+        id: "capcut_month",
+        icon: "capcut",
+        ar: "كاب كات برو",
+        en: "CapCut Pro",
+        plan: "الشهري",
+        price: "10,000 د.ع",
+        how: "حساب جاهز شهري — يتم إرسال بيانات الحساب بعد الترتيب.",
+        short: "مونتاج سريع: قوالب، مؤثرات، نصوص متحركة وفلاتر جميلة.",
+        full: "CapCut ممتاز لصناع المحتوى: انتقالات، تأثيرات، قوالب جاهزة، نصوص متحركة، وخصائص تساعدك تسوي فيديو احترافي بسرعة. الحساب شهري وجاهز.",
+      },
+      {
+        id: "canva",
+        icon: "canva",
+        ar: "كانفا برو",
+        en: "Canva Pro",
+        plan: "الشهري",
+        price: "5,000 د.ع",
+        how: "اشتراك برو — للتصميمات والبوستات والعروض. التفعيل حسب تفاصيل الطلب.",
+        short: "تصميم بسهولة: بوستات، ستوريات، شعارات، وعروض تقديمية بقوالب جاهزة.",
+        full: "Canva منصة تصميم للهاتف والكمبيوتر: قوالب جاهزة، عناصر تصميم، خطووط، وواجهات سهلة للمبتدئين. Canva Pro يفتح لك مكتبة أكبر ويسهل شغلك.",
+      },
+      {
+        id: "todtv_month",
+        icon: "todtv",
+        ar: "تود تي ڤي",
+        en: "TOD TV",
+        plan: "الشهري",
+        price: "15,000 د.ع",
+        how: "اشتراك شخصي شهري — تقدر تضيف 5 أجهزة (كمبيوتر/شاشة/موبايل).",
+        short: "مشاهدة مريحة على أكثر من جهاز مع ترتيب دخول واضح.",
+        full: "TOD TV خدمة مشاهدة حسب الباقة. الاشتراك الشخصي الشهري يدعم إضافة حتى 5 أجهزة. يتم ترتيب بيانات الدخول حسب تفاصيل الطلب.",
+      },
+      {
+        id: "chatgpt_go_year",
+        icon: "chatgpt",
+        ar: "جات جي بي تي Go",
+        en: "ChatGPT Go",
+        plan: "السنوي",
+        price: "40,000 د.ع",
+        how: "اشتراك سنوي — يتم ترتيب التفعيل حسب تفاصيل الطلب.",
+        short: "خيار سنوي للاستخدام الطويل بسعر مناسب.",
+        full: "اشتراك سنوي للاستخدام المستمر: كتابة، تلخيص، ترجمة، أفكار محتوى، وتنظيم عمل ودراسة. التفعيل حسب تفاصيل الطلب.",
+      },
+      {
+        id: "chatgpt_plus_year",
+        icon: "chatgpt",
+        ar: "جات جي بي تي بلس",
+        en: "ChatGPT Plus",
+        plan: "السنوي",
+        price: "80,000 د.ع",
+        how: "اشتراك سنوي بلس — يتم ترتيب التفعيل حسب تفاصيل الطلب.",
+        short: "مناسب للاستخدام اليومي لمن يريد تجربة أقوى وأكثر سلاسة.",
+        full: "Plus يعطي تجربة أقوى ومزايا إضافية مقارنة بالعادي، مناسب للطلاب وأصحاب الأعمال وصناع المحتوى. التفعيل حسب تفاصيل الطلب.",
+      }
+    ];
+
+    const grid = document.getElementById("grid");
+
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function card(p){
+      const msg = waMessage(p.ar, p.plan);
       return `
         <article class="card">
           <div class="cardBody">
-            <div class="tagRow">
-              <div class="pill"><span>⚡</span><b>NAS</b><span>Service</span></div>
-              <div class="price">${p.price}</div>
+            <div class="headRow">
+              <div class="app">
+                <div class="appIcon" aria-hidden="true">
+                  <img src="${iconUrl(p.icon)}" alt="" />
+                </div>
+                <div class="names">
+                  <div class="ar">${escapeHtml(p.ar)} <span style="opacity:.8">(${escapeHtml(p.plan)})</span></div>
+                  <div class="en">${escapeHtml(p.en)}</div>
+                </div>
+              </div>
+              <div class="price">${escapeHtml(p.price)}</div>
             </div>
 
-            <div class="title">
-              <div class="ar">${p.arName}</div>
-              <div class="en">${p.enName}</div>
-            </div>
+            <div class="desc">${escapeHtml(p.how)}</div>
 
-            <div class="desc">
-              <div><b>العربي:</b> ${p.deliveryAr}</div>
-              <div style="margin-top:6px"><b>English:</b> ${p.deliveryEn}</div>
-            </div>
-
-            <div class="actionsRow">
-              <button class="miniBtn" data-toggle="${p.id}">
-                ${p.aboutArTitle} / ${p.aboutEnTitle}
-              </button>
-
-              <a class="btn btnOrder" href="${waLink(orderText)}" target="_blank" rel="noopener">
-                اطلب الآن عبر واتساب
-              </a>
-            </div>
-
-            <div class="details" id="details-${p.id}">
-              <div><strong>العربي:</strong> ${p.aboutAr}</div>
-              <div style="margin-top:10px"><strong>English:</strong> ${p.aboutEn}</div>
+            <div class="ctaRow">
+              <button class="btn btnSmall ripple" data-what="${p.id}">ما هو؟</button>
+              <a class="btn btnWA ripple" href="${waLink(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
             </div>
           </div>
         </article>
       `;
     }
 
-    grid.innerHTML = products.map(cardTemplate).join("");
+    grid.innerHTML = products.map(card).join("");
 
-    // Toggle details
-    document.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-toggle]");
-      if(!btn) return;
-      const id = btn.getAttribute("data-toggle");
-      const panel = document.getElementById(`details-${id}`);
-      const isOpen = panel.style.display === "block";
-      panel.style.display = isOpen ? "none" : "block";
-      if(!isOpen) panel.scrollIntoView({behavior:"smooth", block:"nearest"});
+    // Modal
+    const modal = document.getElementById("modal");
+    const modalBack = document.getElementById("modalBack");
+    const modalClose = document.getElementById("modalClose");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    const modalMore = document.getElementById("modalMore");
+    const modalLess = document.getElementById("modalLess");
+    const modalOrder = document.getElementById("modalOrder");
+
+    let current = null;
+
+    function openModal(p){
+      current = p;
+      modalTitle.innerHTML = `<span>${escapeHtml(p.ar)} — <span style="direction:ltr; opacity:.9">${escapeHtml(p.en)}</span></span>`;
+      modalBody.innerHTML = `
+        <div class="lead">${escapeHtml(p.short)}</div>
+        <div style="margin-top:10px">${escapeHtml(p.how)}</div>
+        <div id="fullText" style="display:none; margin-top:12px;">${escapeHtml(p.full)}</div>
+      `;
+      modalOrder.href = waLink(waMessage(p.ar, p.plan));
+
+      modal.setAttribute("aria-hidden","false");
+      document.body.style.overflow="hidden";
+
+      modalMore.style.display = "inline-flex";
+      modalLess.style.display = "none";
+    }
+    function closeModal(){
+      modal.setAttribute("aria-hidden","true");
+      document.body.style.overflow="";
+      current = null;
+    }
+
+    modalBack.addEventListener("click", closeModal);
+    modalClose.addEventListener("click", closeModal);
+
+    modalMore.addEventListener("click", () => {
+      const full = document.getElementById("fullText");
+      if(!full) return;
+      full.style.display = "block";
+      modalMore.style.display = "none";
+      modalLess.style.display = "inline-flex";
+    });
+    modalLess.addEventListener("click", () => {
+      const full = document.getElementById("fullText");
+      if(!full) return;
+      full.style.display = "none";
+      modalMore.style.display = "inline-flex";
+      modalLess.style.display = "none";
     });
 
-    // Instagram top (already linked, but keep in sync)
-    const igTop = document.getElementById("igTop");
-    igTop.href = INSTAGRAM_URL;
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-what]");
+      if(!btn) return;
+      const id = btn.getAttribute("data-what");
+      const p = products.find(x => x.id === id);
+      if(p) openModal(p);
+    });
+
+    // Ripple + رجاج
+    function addRipple(el, x, y){
+      const rect = el.getBoundingClientRect();
+      const span = document.createElement("span");
+      span.className = "rippleSpan";
+      const size = Math.max(rect.width, rect.height);
+      span.style.width = span.style.height = size + "px";
+      span.style.left = (x - rect.left - size/2) + "px";
+      span.style.top  = (y - rect.top  - size/2) + "px";
+      el.appendChild(span);
+      span.addEventListener("animationend", () => span.remove());
+    }
+    function vibrate(){
+      if (navigator.vibrate) navigator.vibrate(18);
+    }
+    document.addEventListener("pointerdown", (e) => {
+      const t = e.target.closest(".ripple");
+      if(!t) return;
+      addRipple(t, e.clientX, e.clientY);
+      vibrate();
+    });
+
+    // Winter effect
+    const canvas = document.getElementById("winter");
+    const ctx = canvas.getContext("2d", { alpha: true });
+    let W=0,H=0, drops=[];
+    function resize(){
+      W = canvas.width = window.innerWidth * devicePixelRatio;
+      H = canvas.height = window.innerHeight * devicePixelRatio;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      drops = Array.from({length: Math.min(120, Math.floor(window.innerWidth/8))}, () => makeDrop(true));
+    }
+    function makeDrop(initial=false){
+      const x = Math.random()*W;
+      const y = initial ? Math.random()*H : -Math.random()*H*0.2;
+      const r = (Math.random()*2.0 + 0.8) * devicePixelRatio;
+      const sp = (Math.random()*0.7 + 0.35) * devicePixelRatio;
+      const a = Math.random()*0.18 + 0.05;
+      return {x,y,r,sp,a, drift:(Math.random()*0.4-0.2)*devicePixelRatio};
+    }
+    function tick(){
+      ctx.clearRect(0,0,W,H);
+      for(let i=0;i<drops.length;i++){
+        const d = drops[i];
+        d.y += d.sp;
+        d.x += d.drift;
+        if(d.y - d.r > H) drops[i] = makeDrop(false);
+        if(d.x < -50 || d.x > W+50) drops[i] = makeDrop(false);
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,255,255,${d.a})`;
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+        ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    }
+    window.addEventListener("resize", resize);
+    resize(); tick();
+
+    // Music
+    const bgm = document.getElementById("bgm");
+    const musicBtn = document.getElementById("musicBtn");
+    let playing = false;
+
+    musicBtn.addEventListener("click", async () => {
+      try{
+        if(!playing){
+          await bgm.play();
+          playing = true;
+        }else{
+          bgm.pause();
+          playing = false;
+        }
+      }catch(err){
+        alert("حتى تشتغل الموسيقى: ضع ملف باسم winter.mp3 بجانب index.html");
+      }
+    });
   </script>
 </body>
 </html>
